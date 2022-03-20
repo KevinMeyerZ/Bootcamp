@@ -1,102 +1,105 @@
 <?php
-
 use Service\Db;
-use Service\Firebase;
 use Service\Landa;
 
-// $app->get('/dashboard/getTambak', function ($request, $response) {
-//     $params = $request->getParams();
-//     $db = Db::db();
+$app->post('/dashboard/hari_ini',function ($request,$response){
+    $db = Db::db();
 
-//     if (!empty($params['tahun']) && $params['tahun'] != 'undefined') {
-//         $tahun = $params['tahun'];
-//     } else {
-//         $tahun = date('Y');
-//     }
-//     // ej(date('Y',1609812384));
+    $date = date('Y-m-d');
 
+    $data = $db->select('sum(total) as total_hari')
+    ->from('t_transaksi')
+    ->where('tanggal','=',$date);
 
-//     $detail_bawah = $db->select('m_tambak.id,
-//                                m_tambak.m_petani_id,
-//                                m_tambak.luas,
-//                                m_tambak.is_deleted,
-//                                m_tambak.status, 
-//                                wilayah_kabupaten.nama nama_kabupaten,
-//                                wilayah_kabupaten.id as id_wilayah')
-//         ->from('m_tambak')
-//         ->leftJoin('wilayah_kabupaten', 'm_tambak.kabupaten_id = wilayah_kabupaten.id')
-//         ->customWhere("FROM_UNIXTIME(m_tambak.created_at, '%Y') <=" . $tahun, "AND")
-//         ->groupBy('m_tambak.kode');
+    $model = $data->findAll();
 
-//     $modelz = $detail_bawah->findAll();
-//     $arrPerKab = [];
-//     $arrTambak = [];
-//     $arrpetani = [];
-//     $arrLuas = [];
-//     foreach ($modelz as $key => $value) {
-//         $arrpetani[$value->nama_kabupaten][$value->m_petani_id] = $value->m_petani_id;
-//         $arrTambak[$value->nama_kabupaten][$value->id] = $value->id;
-//         $arrLuas[$value->nama_kabupaten][$value->luas] = $value->luas;
-//         $value->status = $value->is_deleted == 1 ? 'keluar' : $value->status;
-//         $arrPerKab[$value->nama_kabupaten] = ['tambak' => count($arrTambak[$value->nama_kabupaten]), 'luas' => array_sum($arrLuas[$value->nama_kabupaten]), 'petani' => count($arrpetani[$value->nama_kabupaten]), 'status' => $value->status, 'kabupaten' => $value->nama_kabupaten, 'id_wilayah' => $value->id_wilayah];
-//     }
+    return successResponse($response, [
+                'user' => $model,
+                'massage' => "Berhasil"
+            ]);
+});
 
-//     $arrPerKab = array_values($arrPerKab);
+$app->post('/dashboard/bulan_ini',function ($request,$response){
+    $db = Db::db();
 
-//     return successResponse($response, $arrPerKab);
+    $date = date('Y-m-d');
 
+    $data = $db->select('MONTHNAME(tanggal),sum(total) as bulan_ini')
+    ->from('t_transaksi')
+    ->groupBy('YEAR(tanggal), MONTH(tanggal)');
 
-// });
+    $model = $data->findAll();
 
+    return successResponse($response, [
+                'user' => $model,
+                'massage' => "Berhasil"
+            ]);
+});
 
-// function getDetail($detail)
-// {
-//     $data = [
-//         'petani' => 0,
-//         'tambak' => 0,
-//         'tambak_luas' => 0,
+$app->post('/dashboard/item_terjual',function ($request,$response){
+    $db = Db::db();
 
+    $data = $db->select('sum(t_transaksi_det.qty) as total_terjual')
+    ->from('t_transaksi')
+    ->leftJoin('t_transaksi_det','t_transaksi.kode = t_transaksi_det.kode');
 
-//     ];
+    $model = $data->findAll();
 
-//     foreach ($detail as $key => $val) {
+    return successResponse($response, [
+                'user' => $model,
+                'massage' => "Berhasil"
+            ]);
+});
 
-//         if ($val['status'] == 'anggota' || 'baru') {
-//             $data['petani']++;
-//             $data['tambak']++;
-//             $data['tambak_luas'] += $val['luas'];
-//         } else {
-//             'data kosong';
-//         }
-//     }
+$app->post('/dashboard/best_seller',function ($request,$response){
+    $db = Db::db();
 
-//     $dataBaru = [];
-//     foreach (@$data as $k => $v) {
-//         $dataBaru[] = $v;
-//     }
-//     $return = ['data' => $data, 'dataTotal' => $dataBaru];
-//     return $return;
-// }
+    $data = $db->select('m_produk.nama,sum(t_transaksi_det.qty) as best_seller')
+    ->from('t_transaksi')
+    ->leftJoin('t_transaksi_det','t_transaksi.kode = t_transaksi_det.kode')
+    ->leftJoin('m_produk','t_transaksi_det.id_produk = m_produk.id_produk')
+    ->groupBy('t_transaksi_det.id_produk')
+    ->orderBy('best_seller DESC')
+    ->limit(2);
 
-// function getTotal($detail)
-// {
-//     $data = [
+    $model = $data->findAll();
 
-//         'tambak' => 0,
-//         'tambak_luas' => 0,
+    return successResponse($response, [
+                'user' => $model,
+                'massage' => "Berhasil"
+            ]);
+});
 
-//     ];
-//     foreach ($detail as $key => $val) {
+$app->post('/dashboard/pie_chart',function ($request,$response){
+    $db = Db::db();
 
+    $data = $db->select('m_kategori.nama_kategori,count(m_produk.id_kategori) as jumlah')
+    ->from('m_produk')
+    ->leftJoin('m_kategori','m_produk.id_kategori = m_kategori.id')
+    ->groupBy('m_produk.id_kategori');
 
-//         $data['anggota_luas'] += $val['anggota_luas'];
-//         $data['baru'] += $val['baru'];
-//         $data['baru_luas'] += $val['baru_luas'];
-//         $data['keluar'] += $val['keluar'];
-//         $data['keluar_luas'] += $val['keluar_luas'];
-//     }
-//     // ej($data);exit;
+    $model = $data->findAll();
 
-//     return $data;
-// }
+    return successResponse($response, [
+                'user' => $model,
+                'massage' => "Berhasil"
+            ]);
+});
 
+$app->post('/dashboard/bar_chart',function ($request,$response){
+    $db = Db::db();
+
+    $data = $db->select('DAYNAME(t_transaksi.tanggal) as hari,sum(t_transaksi_det.qty) as jumlah')
+    ->from('t_transaksi')
+    ->leftJoin('t_transaksi_det','t_transaksi_det.kode = t_transaksi.kode')
+    ->leftJoin('m_produk','t_transaksi_det.id_produk = m_produk.id_produk')
+    ->leftJoin('m_kategori','m_produk.id_kategori = m_kategori.id')
+    ->groupBy('YEAR(t_transaksi.tanggal), MONTH(t_transaksi.tanggal), DAY(t_transaksi.tanggal)');
+
+    $model = $data->findAll();
+
+    return successResponse($response, [
+                'user' => $model,
+                'massage' => "Berhasil"
+            ]);
+});

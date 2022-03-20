@@ -1,0 +1,288 @@
+<!-- Navbar -->
+<app-topbarku></app-topbarku>
+<!-- Navbar -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-2">
+            <app-sidebarku></app-sidebarku>
+        </div>
+        <div class="col-lg-10">
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-lg-12">
+                    <div class="card text-dark bg-white mb-3" style="margin-top: 20px; box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);">
+                        <div class="card-body">
+                            <div class="row">
+                              <div class="col-lg-3">
+                                <label for="produk">Nama Produk</label>
+                                <input type="text" class="form-control" placeholder="Nama Produk" [(ngModel)]="modelParam.produk"/>
+                              </div>
+                                <div class="col-lg-3">
+                                    <label for="produk">Kategori Produk</label>
+                                    <select class="form-control form-select" [(ngModel)]="modelParam.kategori" aria-label=".form-select-sm example">
+                                        <option value="" selected>Pilih Kategori</option>
+                                        <option value="1">Makanan</option>
+                                        <option value="2">Minuman</option>
+                                    </select>
+                                </div>
+                            </div>
+                              <div style="margin-top: 20px; float: right;">
+                                <button type="button" class="btn btn-primary" (click)="search()">Search Data</button>
+                              </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="card text-dark bg-white mb-3" style="margin-top: 20px; box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);">
+                        <div class="container">
+                            <div style="margin-top: 20px;margin-bottom: 20px;float: right;">
+                                 <button type="button" class="btn btn-success" (click)="openModal(modaladd)">Tambah Data</button>
+                            </div>
+                             <table datatable [dtOptions]="dtOptions" class="table">
+                             <thead>
+                               <tr>
+                                 <th scope="col">Id</th>
+                                 <th scope="col">Produk</th>
+                                 <th scope="col">Kategori</th>
+                                 <th scope="col">Harga</th>
+                                 <th scope="col">Topping</th>
+                                 <th scope="col">Deskripsi</th>
+                                 <th scope="col">Gambar</th>
+                                 <th scope="col"></th>
+                                 <th scope="col"></th>
+                               </tr>
+                             </thead>
+                             <tbody>
+                               <tr *ngFor="let data of produk_database; let i = index;">
+                                 <th scope="row">{{i+1}}</th>
+                                 <td>{{data.nama}}</td>
+                                 <td>{{data.nama_kategori}}</td>
+                                 <td>{{data.harga}}</td>
+                                 <td maxlength="10">{{data.toping}}</td>
+                                 <td>{{data.deskripsi}}</td>
+                                 <td><img width="150" height="100" src="http://localhost/training-angular-9/api/{{data.foto}}" ></td>
+                                 <td><button class="btn btn-success" (click)="updateModal(modalupdate, data.id_produk)"><img src="assets/edit_white_24dp.svg"></button></td>
+                                 <td><button class="btn btn-danger" (click)="deleteModal(modaldelete, data.id_produk)" style="margin-left: 5px;"><img src="assets/delete_white_24dp.svg"></button></td>
+                               </tr>
+                             </tbody>
+                             </table>
+                        </div>   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<ng-template #modaladd role="document" let-modal>
+  <form [formGroup]="requiredForm" (ngSubmit)="submit()" novalidate >
+      <div class="modal-header">
+        <h5 class="modal-title mt-0">Tambah Data Produk</h5>
+        <button type="button" class="close" aria-hidden="true" #closebutton (click)="modal.dismiss('Cross click')">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group mb-3">
+              <label for="namaproduk">Nama Produk</label>
+              <input type="text" class="form-control"
+                  placeholder="Nama Produk" formControlName="nama_produk"/>
+              <div *ngIf="f.nama_produk.touched && f.nama_produk.invalid" style="color: red;">
+                <div *ngIf="f.nama_produk.errors.required">
+                  *Nama Produk Harus Diisi.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group mb-3">
+              <label for="kategori">Kategori</label>
+              <select class="form-control form-select" formControlName="kategori" aria-label=".form-select-sm example">
+                  <option value="" selected>-- Pilih Kategori --</option>
+                  <option value="1">Makanan</option>
+                  <option value="2">Minuman</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group mb-3">
+              <label for="hargajual">Harga Jual</label>
+              <input type="text" class="form-control"
+                  placeholder="Harga Jual" formControlName="harga_jual"/>
+              <div *ngIf="f.harga_jual.touched && f.harga_jual.invalid" style="color: red;">
+                <div *ngIf="f.harga_jual.errors.required">*Harga Jual Harus Diisi.</div>
+                <div *ngIf="f.harga_jual.errors.pattern">*Format Harga Jual Harus Angka.</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group mb-3">
+              <label for="hpp">HPP</label>
+              <input type="text" class="form-control"
+                  placeholder="HPP" formControlName="hpp"/>
+              <div *ngIf="f.hpp.touched && f.hpp.invalid" style="color: red;">
+                <div *ngIf="f.hpp.errors.required">*Hpp Harus Diisi.</div>
+                <div *ngIf="f.hpp.errors.pattern">*Format Hpp Harus Angka.</div>
+              </div>  
+          </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group mb-3">
+              <label for="hpp">Foto Produk</label>
+              <input type="file" class="form-control"
+                  placeholder="Foto Produk" formControlName="foto" (change)="fileChangeEvent($event)"/>
+            </div>
+            <div *ngIf="!showForm2">
+              <image-cropper
+              [imageChangedEvent]="imageChangedEvent"
+              [maintainAspectRatio]="true"
+              [aspectRatio]="4 / 3"
+              format="png"
+              (imageCropped)="imageCropped($event)"
+              (imageLoaded)="imageLoaded()"
+              (cropperReady)="cropperReady()"
+              (loadImageFailed)="loadImageFailed()"
+          ></image-cropper>
+            </div>
+            <img [src]="imageSrc" *ngIf="imageSrc" style="height: 300px; width:500px">
+          </div>
+          <div class="col-lg-6" style="margin-top: 25px;" >
+            <div *ngIf="showForm">
+              <button type="button" class="btn btn-primary" (click)="cropku()">Selesai</button>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div class="form-group mb-3">
+              <label for="deskripsi">Deskripsi Produk</label>
+              <ckeditor name="deskripsi" formControlName="deskripsi"></ckeditor>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <button type="button" (click)="onAddRow()" class="btn btn-primary">+</button>
+          </div>   
+          <div class="col-lg-2" style="margin-top: 10px;" *ngFor="let a of arrayOfObj">
+            <div class="form-group">
+              <label for="topping">Topping {{a}}</label>
+              <input type="text" id="topping{{a}}" class="form-control"
+                    placeholder="Topping"/>
+            </div>
+          </div>
+        </div>  
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Tutup</button>
+        <button type="submit" class="btn btn-primary" [disabled]="!requiredForm.valid">Simpan</button>
+      </div>
+    </form>
+</ng-template>
+
+<ng-template #modalupdate role="document" let-modal>
+  <form [formGroup]="updateForm" (ngSubmit)="submit_update()" novalidate >
+      <div class="modal-header">
+        <h5 class="modal-title mt-0">Update Data Produk</h5>
+        <button type="button" class="close" aria-hidden="true" #closebutton (click)="modal.dismiss('Cross click')">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group mb-3">
+              <label for="namaproduk">Nama Produk</label>
+              <input type="text" class="form-control"
+                  placeholder="Nama Produk" formControlName="unama_produk"/>
+              <input type="text" class="form-control" placeholder="Id" formControlName="id_produk" hidden/>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group mb-3">
+              <label for="kategori">Kategori</label>
+              <select class="form-control form-select" formControlName="ukategori" aria-label=".form-select-sm example">
+                  <option value="">-- Pilih Kategori --</option>
+                  <option value="1">Makanan</option>
+                  <option value="2">Minuman</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group mb-3">
+              <label for="hargajual">Harga Jual</label>
+              <input type="text" class="form-control"
+                  placeholder="Harga Jual" formControlName="uharga_jual"/>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group mb-3">
+              <label for="hpp">HPP</label>
+              <input type="text" class="form-control"
+                  placeholder="HPP" formControlName="uhpp"/>
+          </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group mb-3">
+              <label for="foto">Foto Produk</label>
+              <input type="file" class="form-control"
+                  placeholder="Foto Produk" (change)="fileChangeEvent($event)"/>
+            </div>
+            <div *ngIf="!showForm2">
+            <image-cropper
+            [imageChangedEvent]="imageChangedEvent"
+            [maintainAspectRatio]="true"
+            [aspectRatio]="4 / 3"
+            format="png"
+            (imageCropped)="imageCropped($event)"
+            (imageLoaded)="imageLoaded()"
+            (cropperReady)="cropperReady()"
+            (loadImageFailed)="loadImageFailed()"
+            ></image-cropper>
+          </div>
+          <img [src]="u_imageSrc" *ngIf="u_imageSrc" style="height: 300px; width:500px">
+        </div>
+        <div class="col-lg-6" style="margin-top: 25px;" >
+          <div *ngIf="showForm">
+            <button type="button" class="btn btn-primary" (click)="u_cropku()">Selesai</button>
+          </div>
+        </div>
+          <div class="col-lg-12">
+            <div class="form-group mb-3">
+              <label for="deskripsi">Deskripsi Produk</label>
+              <ckeditor name="deskripsi" formControlName="udeskripsi"></ckeditor>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <button type="button" (click)="onAddRowupdate()"  class="btn btn-primary">+</button>
+          </div>   
+          <div class="col-lg-2" style="margin-top: 10px;" *ngFor="let a of u_topping; let i = index">
+            <div class="form-group">
+              <label for="topping">Topping {{i+1}}</label>
+              <input type="text" id="u_topping{{i+1}}" value="{{a}}" class="form-control"
+                    placeholder="Topping"/>
+            </div>
+          </div>
+          <div class="col-lg-2" style="margin-top: 10px;" *ngFor="let a of u_arrayOfObj">
+            <div class="form-group">
+              <label for="topping">Topping {{a}}</label>
+              <input type="text" id="u_topping{{a}}" class="form-control"
+                    placeholder="Topping"/>
+            </div>
+          </div>
+        </div>  
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Tutup</button>
+        <button type="submit" class="btn btn-primary">Edit Data</button>
+      </div>
+    </form>
+</ng-template>
+
+<ng-template #modaldelete role="document" let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title mt-0">Hapus Produk</h5>
+        <button type="button" class="close" aria-hidden="true" #closebutton (click)="modal.dismiss('Cross click')">×</button>
+      </div>
+      <div class="modal-body">
+        <h6>Anda Yakin Ingin Menghapus Data ?</h6>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Tutup</button>
+        <button type="button" class="btn btn-danger" (click)="b_hapus()">Hapus</button>
+      </div>
+</ng-template>

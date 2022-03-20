@@ -1,0 +1,107 @@
+<app-topbar></app-topbar>
+
+<div class="col-lg-12">
+    <div class="card" style="margin-top:20px; box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);">
+        <div class="card-body">
+            <h4 class="card-title">Tambah Menu</h4>
+            <form [formGroup]="tambahForm" (ngSubmit)="submit()" novalidate> 
+                <div class="row">       
+                    <div class="col-6">
+                        <div class="row">
+                            <div  class="col-12">
+                                <label  class="form-label">Nama</label>
+                                <input  type="text" placeholder="Nama Menu" class="form-control" formControlName="nama_menu">
+                                <div *ngIf="f.nama_menu.touched && f.nama_menu.invalid" style="color: red;">
+                                    <div *ngIf="f.nama_menu.errors.required">
+                                      *Nama Menu Harus Diisi.
+                                    </div>
+                                </div>
+                            </div>
+                            <div  class="col-12" style="margin-top: 10px;">
+                                <label  class="form-label">Kategori</label>
+                            </div>
+                            <div  class="col-12">
+                                <div role="group" class="btn-group btn-group-example mb-3">
+                                    <button *ngFor="let item of sc_kategori" id="kat_button{{item.id}}" type="button" [ngClass]="kat_button" (click)="kategori_click(item.id)">{{item.nama_kategori}}</button>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label  class="form-label">Harga</label>
+                                <div  class="input-group">
+                                    <div  class="input-group-prepend">
+                                        <span  class="input-group-text">Rp</span>
+                                    </div>
+                                    <input  type="text" placeholder="Harga" class="form-control" formControlName="harga">
+                                    <div *ngIf="f.harga.touched && f.harga.invalid" style="color: red;">
+                                        <div *ngIf="f.harga.errors.required">
+                                          *Harga Menu Harus Diisi.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12" style="margin-top: 10px;">
+                                <label  class="form-label">Deskripsi Singkat</label>
+                                <textarea placeholder="Deskripsi Singkat" class="form-control" formControlName="dekripsi"></textarea>
+                                <div *ngIf="f.dekripsi.touched && f.dekripsi.invalid" style="color: red;">
+                                    <div *ngIf="f.dekripsi.errors.required">
+                                      *Deskripsi Menu Harus Diisi.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="mt-4" style="background: #dcdcdc;height: 227px;border-radius: .8rem;cursor: pointer;">
+                                </div>
+                            </div>
+                            <div  class="col-12" style="margin-top: 10px;">
+                                <label  class="form-label">Status</label>
+                            </div>
+                            <div  class="col-12">
+                                <div role="group" class="btn-group btn-group-example mb-3">
+                                    <button type="button" class="btn btn-outline-primary w-sm" (click)="status_menu('0')">Ada</button>
+                                    <button type="button" class="btn btn-outline-primary w-sm" (click)="status_menu('1')">Habis</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                <tr>
+                                    <th scope="col"><a type="button" (click)="addSplit()"><i class="fa fa-plus-square i-menu" style="color: #34c38f;"></i></a></th>
+                                    <th scope="col">Keterangan</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Harga</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container [formGroup]="splitData">
+                                        <ng-container formArrayName="splitValue" *ngFor="let datacok of  splitdata().controls; let i=index;">
+                                            <tr  [formGroupName]="i">
+                                                <th scope="row"><a type="button" (click)="deleteSplit(i)"><i class="fa fa-minus-square i-menu" style="color: #F46A6A;"></i></a></th>
+                                                <td><input type="text" placeholder="Keterangan" class="form-control" formControlName="keterangan"></td>
+                                                <td><select class="form-control" formControlName="tipe">
+                                                    <option selected>Pilih Data</option>
+                                                    <option>Topping</option>
+                                                    <option>Level</option>
+                                                    </select></td>
+                                                <td><input type="text" placeholder="Harga" class="form-control" formControlName="harga"></td>
+                                            </tr>
+                                        </ng-container>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-12" style="float: left;">
+                        <button type="submit" class="btn btn-primary" [disabled]="!tambahForm.valid">Simpan</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

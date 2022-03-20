@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid black;
+    }
+
+    .table td,
+    .table th {
+        font-size: 12px;
+        border: 1px solid black;
+        padding: 3px;
+    }
+</style>
+
+<body>
+
+
+
+    <table border="1">
+        <thead>
+
+            <tr>
+                <th class="border-right align-middle">
+
+                    <div style="text-align: center;">Tanggal</div>
+                </th>
+
+                <th class="border-right align-middle">
+
+                    <div style="text-align: center;">Kode Pembelian</div>
+                </th>
+
+
+                <th class="border-right align-middle">
+
+                    <div style="text-align: center;">Barang
+                    </div>
+                </th>
+                <th class="border-right align-middle">
+
+                    <div style="text-align: center;">Jumlah</div>
+                </th>
+                <th class="border-right align-middle">
+
+                    <div style="text-align: center;">Harga</div>
+                </th>
+                <th class="border-right align-middle">
+
+                    <div style="text-align: center;">Diskon</div>
+                </th>
+                <th class="border-right align-middle">
+
+                    <div style="text-align: center;">Amount</div>
+                </th>
+
+            </tr>
+
+
+        </thead>
+        <tbody>
+            {% if list is defined %}
+            {% for key, val in list %}
+            <tr>
+                <td style="text-align: center;align-items: center;" rowspan="{{val.rows + 1}}">{{val.tgl}}
+                </td>
+                <td class="text-center border-right" rowspan="{{val.rows + 1}}">{{val.kode}}
+                </td>
+
+
+            </tr>
+
+            {% for item in val.detail %}
+            <tr>
+                <td style="text-align: center;">{{item.nama_barang}}</td>
+                <td style="text-align: center;">{{item.jumlah_barang}}</td>
+                <td style="text-align: center;">Rp. {{item.harga | number_format(2)}}</td>
+                <td style="text-align: center;">{{item.diskon}}</td>
+                <td style="text-align: center;">Rp. {{item.total_item |number_format(2)}}
+                </td>
+            </tr>
+            {% endfor %}
+
+            {% endfor %}
+            {% endif %}
+            <tr>
+                <td colspan="6" class="text-end">Total </td>
+                <td class="text-center"> Rp. {{data_atas.total_bawah | number_format(2)}}
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+
+</body>
+
+</html>

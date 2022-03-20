@@ -129,6 +129,5 @@ export class LoginComponent implements OnInit, AfterViewInit {
                     this.error = res.errors[0];
                 }
             });
-
     }
 }

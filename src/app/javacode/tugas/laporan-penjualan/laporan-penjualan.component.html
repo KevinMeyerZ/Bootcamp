@@ -1,0 +1,117 @@
+<app-topbar></app-topbar>
+<style>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+</style>
+
+<div class="container-fluid" style="margin-top: 20px;">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card text-dark bg-white mb-3" style="box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <div class="col-lg-3" style="margin-top: 5px;">
+                                    <label for="range">Tanggal</label>
+                                </div>
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" name="daterangeInput" daterangepicker [options]="options" (selected)="selectedDate($event, daterange)"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <div class="col-lg-3" style="margin-top: 5px;">
+                                    <label for="range">Customer</label>
+                                </div>
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" [(ngModel)]="modelParam.customer"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <div class="col-lg-3" style="margin-top: 5px;">
+                                    <label for="range">No Struk</label>
+                                </div>
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" [(ngModel)]="modelParam.menu"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12" style="margin-top: 20px;">
+                            <div class="text-center">
+                                <button type="button" class="btn bg-primary" style="color: #fff; margin: 5px;" (click)="search()">Tampilkan</button>
+                                <button type="button" class="btn btn-danger" style="margin: 5px;" (click)="exportpdf()">PDF</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="card"  style="box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);">
+              <div class="card-body">
+                <h4 class="card-title">Table Penjualan</h4>
+                <div class="table-responsive">
+                  <table datatable [dtOptions]="dtOptions" class="table mb-0">
+                    <thead>
+                      <tr>
+                        <th class="align-middle text-center" rowspan="2">No</th>
+                        <th class="align-middle text-center" rowspan="2">No Struk</th>
+                        <th class="align-middle text-center" rowspan="2">Customer</th>
+                        <th class="align-middle text-center" rowspan="2">Tanggal</th>
+                        <th class="align-middle text-center" rowspan="2">Menu</th>
+                        <th class="align-middle text-center" rowspan="2">Jumlah</th>
+                        <th class="align-middle text-center" rowspan="2">Harga</th>
+                        <th class="align-middle text-center" rowspan="2">Total</th>
+                        <td class="text-center" colspan="2">Promo</td>
+                        <td class="align-middle text-center" rowspan="2">Total Bayar</td>
+                      </tr>
+                      <tr>
+                          <th>Diskon</th>
+                          <th>Voucher</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let data of data_database;let i = index;">
+                            <tr>      
+                                <td [attr.rowspan]="data.rows+1">{{data.nomor}}</td>
+                                <td [attr.rowspan]="data.rows+1">{{data.kode}}</td>
+                                <td [attr.rowspan]="data.rows+1">{{data.nama}}</td>
+                                <td [attr.rowspan]="data.rows+1">{{data.tanggal}}</td>
+                                <td *ngIf="data.detail[0].nomor == 1">{{data.detail[0].nama}}</td>
+                                <td *ngIf="data.detail[0].nomor == 1">{{data.detail[0].qty}}</td>
+                                <td *ngIf="data.detail[0].nomor == 1">{{data.detail[0].harga | currency: 'Rp'}}</td>
+                                <td *ngIf="data.detail[0].nomor == 1">{{data.detail[0].total | currency: 'Rp'}}</td>
+                                <td [attr.rowspan]="data.rows+1">{{data.diskon}}</td>
+                                <td [attr.rowspan]="data.rows+1"></td>
+                                <td [attr.rowspan]="data.rows+1">{{data.totaldiskon | currency: 'Rp'}}</td>
+                            </tr>
+                            <tr *ngFor="let item of data.detail">
+                              <td *ngIf="item.nomor != 1">{{item.nama}}</td>
+                              <td *ngIf="item.nomor != 1">{{item.qty}}</td>
+                              <td *ngIf="item.nomor != 1">{{item.harga | currency: 'Rp'}}</td>
+                              <td *ngIf="item.nomor != 1">{{item.total | currency: 'Rp'}}</td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                          <td colspan="7" class="text-center">Grand Total</td>
+                          <td>{{total_bawah.total_tanpa_diskon | currency: 'Rp'}}</td>
+                          <td></td>
+                          <td></td>
+                          <td>{{total_bawah.total_diskon | currency: 'Rp'}}</td>
+                        </tr>
+                      </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>

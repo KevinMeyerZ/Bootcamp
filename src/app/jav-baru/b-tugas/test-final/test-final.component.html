@@ -1,0 +1,138 @@
+<div class="container-fluid" style="margin-top: 20px;">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card text-dark bg-white mb-3" style="box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <div class="col-lg-3" style="margin-top: 5px;">
+                                    <label for="range">Tanggal</label>
+                                </div>
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" name="daterangeInput" daterangepicker [options]="options" (selected)="selectedDate($event, daterange)"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <div class="col-lg-3" style="margin-top: 5px;">
+                                    <label for="range">Cabang<label style="color: red;">*</label></label>
+                                </div>
+                                <div class="col-lg-9">
+                                    <select class="form-control form-select" aria-label=".form-select-sm example" (change)="s_gudang()" [(ngModel)]="modelParam.cabang">
+                                        <option value="" selected>Pilih Cabang</option>
+                                        <option *ngFor="let item of database_cabang" value="{{item.id}}">{{item.nama}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <div class="col-lg-3" style="margin-top: 5px;">
+                                    <label for="range">Item</label>
+                                </div>
+                                <div class="col-lg-9">
+                                    <select class="form-control form-select" aria-label=".form-select-sm example" [(ngModel)]="modelParam.item">
+                                        <option value="" selected>Pilih Item</option>
+                                        <option *ngFor="let item of database_item" value="{{item.id}}">{{item.nama}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <div class="col-lg-3" style="margin-top: 5px;">
+                                    <label for="range">Gudang</label>
+                                </div>
+                                <div class="col-lg-9">
+                                    <select class="form-control form-select" aria-label=".form-select-sm example" [(ngModel)]="modelParam.gudang">
+                                        <option value="" selected>Pilih Gudang</option>
+                                        <option *ngFor="let item of database_gudang" value="{{item.id}}">{{item.nama}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12" style="margin-top: 10px;">
+                            <div class="text-center">
+                                <button type="button" class="btn bg-primary" style="color: #fff; margin: 5px;" (click)="search()">Tampilkan</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="card"  style="box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);">
+              <div class="card-body">
+                <h4 class="card-title">Laporan Kartu Stok</h4>
+                <div class="table-responsive">
+                    <table class="table table-bordered" style="width:100%;">
+                        <thead style="background: #009aad; color: white">
+                            <tr style="text-align: center;">
+                                <th class="align-middle" rowspan="2">Tanggal</th>
+                                <th class="align-middle" rowspan="2">Nomor Resensi</th>
+                                <th class="align-middle" rowspan="2">Keterangan</th>
+                                <th class="align-middle" colspan="3">Masuk</th>
+                                <th class="align-middle" colspan="3">Keluar</th>
+                                <th class="align-middle" colspan="3">Saldo</th>
+                            </tr>
+                            <tr style="text-align: center;">
+                                <th class="text-center">Jumlah</th>
+                                <th class="text-center">Harga</th>
+                                <th class="text-center">Saldo</th>
+                                <th class="text-center">Jumlah</th>
+                                <th class="text-center">Harga</th>
+                                <th class="text-center">Saldo</th>
+                                <th class="text-center">Jumlah</th>
+                                <th class="text-center">Harga</th>
+                                <th class="text-center">Saldo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th colspan="9">Saldo Awal</th>
+                                <th>{{grand_jumlah}} PCS</th>
+                                <th>{{grand_harga | currency: 'Rp'}}</th>
+                                <th>{{grand_saldo | currency: 'Rp'}}</th>
+                            </tr>
+                            <ng-container *ngFor="let item of data_database">
+                                <tr>
+                                    <td>{{item.tanggal}}</td>
+                                    <td>{{item.kode}}</td>
+                                    <td>{{item.catatan}}</td>
+                                    <ng-container *ngIf="item.jumlah_masuk !=null;else kondisi">
+                                        <td>{{item.jumlah_masuk}} PCS</td>
+                                        <td>{{item.harga | currency: 'Rp'}}</td>
+                                        <td>{{item.total | currency: 'Rp'}}</td>
+                                    </ng-container>
+                                    <ng-container *ngIf="item.jumlah_keluar !=null;else kondisi">
+                                        <td>{{item.jumlah_keluar}} PCS</td>
+                                        <td>{{item.harga | currency: 'Rp'}}</td>
+                                        <td>{{item.total | currency: 'Rp'}}</td>
+                                    </ng-container>
+                                    <ng-container *ngIf="item.jumlah_keluar !=null;">
+                                        <td>{{item.jumlah_akhir}} PCS</td>
+                                        <td>{{item.harga_akhir | currency: 'Rp'}}</td>
+                                        <td>{{item.saldo_akhir | currency: 'Rp'}}</td>
+                                    </ng-container>
+                                    <ng-container *ngIf="item.jumlah_masuk !=null;">
+                                        <td>{{item.jumlah_akhir}} PCS</td>
+                                        <td>{{item.harga_akhir | currency: 'Rp'}}</td>
+                                        <td>{{item.saldo_akhir | currency: 'Rp'}}</td>
+                                    </ng-container>
+                                </tr>
+                                <ng-template #kondisi>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </ng-template>
+                            </ng-container>                      
+                        </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>

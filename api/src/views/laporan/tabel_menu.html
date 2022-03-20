@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<style class="text/css">
+    * {
+        -webkit-print-color-adjust: exact !important;
+        /*Chrome, Safari */
+        color-adjust: exact !important;
+        /*Firefox*/
+    }
+    
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    
+    .table td,
+    .table th {
+        font-size: 12px;
+        border: 1px solid black;
+    }
+    
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        /* margin-right: -12px;
+    margin-left: -12px; */
+    }
+    
+    .col {
+        flex-basis: 0;
+        flex-grow: 1;
+        min-width: 0;
+        max-width: 100%;
+    }
+    
+    .col-1 {
+        flex: 0 0 40%;
+        max-width: 40%
+    }
+    
+    .col-2 {
+        flex: 0 0 20%;
+        max-width: 20%
+    }
+    
+    .col-3 {
+        flex: 0 0 70%;
+        max-width: 70%
+    }
+    
+    .col-4 {
+        flex: 0 0 30%;
+        max-width: 30%
+    }
+    
+    .col-5 {
+        flex: 0 0 28%;
+        max-width: 28%
+    }
+    
+    .footer {
+        border: 2px solid black;
+    
+    }
+    
+    .table-top {
+        border: 2px solid black;
+        width: fit-content;
+    
+    }
+    
+    .top {
+        width: 150px;
+        height: 100px;
+    }
+</style>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="col-md-12 mt-5">
+        <table class="table table-bordered" style="width:100%;">
+            <thead style="background-color: #F9CA9C;">
+                <tr>
+                <th class="border-right align-middle text-center" rowspan="2">Menu</th>
+                <th  class="border-right text-center" colspan="31">Periode: {{month}} 2022</th>
+                <th class="border-right align-middle text-center" rowspan="2">Total</th>
+                </tr>
+                <tr>
+                {% for key, tanggal in list %}
+                <th class="border-right">{{tanggal.harian}}</th>
+                {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>Grand Total</th>
+                    {% for key, tanggal in list %}
+                    {% if tanggal.total_pertanggal != null %}
+                    <td>{{tanggal.total_pertanggal}}</td>
+                    {% else %}
+                    <td>0</td>
+                    {% endif %}
+                    {% endfor %}
+                    <td>{{g_total}}</td>
+                </tr>
+                {% for key, kat in kategori %}
+                <tr style="background-color: #c9dbf7;">
+                    <th colspan="33">{{kat.kategori}}</th>
+                </tr>
+                {% for key, produknya in produk %}
+                {% if produknya.produk_kategori == kat.kategori %}
+                <tr>
+                    <td>{{ produknya.produk}}</td>
+                    {% for key, data in list %}
+                    {% set val = 0 %}
+                        {% if data.detail != null  %}
+                            {% for key, item in data.detail %}
+                            {% if data.harian == item.hariku and produknya.produk == item.nama and kat.kategori == item.kategori %}
+                                
+                                {% set val = item.total %}
+
+                            {% endif %}
+                            {% endfor %}
+                            <td>{{ val }}</td>
+                        {% else %}
+                        <td>0</td>
+                        {% endif %}
+                    {% endfor %}
+                    {% for key, data in total_produk %}
+                    {% if produknya.produk == data.nama_pro%}
+                    <td>{{data.total}}</td>
+                    {% endif %}
+                    {% endfor %}
+                </tr>
+                {% endif %}
+                {% endfor %}
+                <tr>
+                    <th colspan="32">Total {{kat.kategori}}</th>
+                    {% for key, item in total_kategori %}
+                    {% if kat.kategori == item.kategori_sek %}
+                    <td>{{item.total}}</td>
+                    {% endif %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+
+</body>
+
+</html>

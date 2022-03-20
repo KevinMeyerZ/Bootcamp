@@ -1,0 +1,182 @@
+<app-topbarku></app-topbarku>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-2">
+            <app-sidebarku></app-sidebarku>
+        </div>
+        <div class="col-lg-10">
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-lg-4">
+                    <div class="card text-dark bg-white mb-3" style="box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);">
+                    <div class="card-body">
+                        <div class="row">
+                        <div class="col-lg-3" style="margin-top: 5px;">
+                            <label for="namaproduk">Tanggal</label>
+                        </div>
+                        <div class="col-lg-9" style="margin-top: 5px;"> 
+                            <input type="date" class="form-control"/>
+                        </div>
+                        <div class="col-lg-3" style="margin-top: 5px;">
+                            <label for="kasir">Kasir</label>
+                        </div>
+                        <div class="col-lg-9" style="margin-top: 5px;">
+                            <input type="text" class="form-control"/>
+                        </div>
+                        <div class="col-lg-3" style="margin-top: 5px;">
+                            <label for="customer">Customer</label>
+                        </div>
+                        <div class="col-lg-9" style="margin-top: 5px;">
+                            <input type="text" class="form-control"/>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card text-dark bg-white mb-3" style="box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);">
+                        <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-3" style="margin-top: 5px;">
+                                <label for="barcode">Barcode</label>
+                            </div>
+                            <div class="col-lg-9" style="margin-top: 5px;"> 
+                                <input type="text" class="form-control"/>
+                            </div>
+                            <div class="col-lg-3" style="margin-top: 5px;">
+                                <label for="qty">Qty</label>
+                            </div>
+                            <div class="col-lg-9" style="margin-top: 5px;">
+                                <input type="text" class="form-control"/>
+                            </div>
+                            <div class="col-lg-12" style="margin-top: 5px;">
+                                <button class="btn bg-primary" style="color: #fff;">Add</button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card text-dark bg-white mb-3" style="box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);">
+                        <div class="card-body text">
+                            <h5>TOTAL :</h5>
+                            <br>
+                            <div style="text-align: center; font-size: 35px;">15.000</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="card text-dark bg-white mb-3" style="margin-top: 20px; box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);">
+                        <table class="table">
+                        <thead>
+                            <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">Produk</th>
+                            <th scope="col">Harga</th>
+                            <th scope="col">Qty</th>
+                            <th scope="col">Disc</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            <th scope="row">1</th>
+                            <td>Nasi Ayam Geprek</td>
+                            <td>8000</td>
+                            <td>2</td>
+                            <td>0</td>
+                            <td>16000</td>
+                            <td><button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalupdate"><img src="assets/edit_white_24dp.svg"></button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modaldelete" style="margin-left: 5px;"><img src="assets/delete_white_24dp.svg"></button></td>
+                            </tr>
+                            <tr>
+                            <th scope="row">2</th>
+                            <td>Nasi Ayam Geprek</td>
+                            <td>8000</td>
+                            <td>2</td>
+                            <td>0</td>
+                            <td>16000</td>
+                            <td><button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalupdate"><img src="assets/edit_white_24dp.svg"></button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modaldelete" style="margin-left: 5px;"><img src="assets/delete_white_24dp.svg"></button></td>
+                            </tr>
+                            <tr>
+                            <th scope="row">3</th>
+                            <td>Nasi Ayam Geprek</td>
+                            <td>8000</td>
+                            <td>2</td>
+                            <td>0</td>
+                            <td>16000</td>
+                            <td><button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalupdate"><img src="assets/edit_white_24dp.svg"></button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modaldelete" style="margin-left: 5px;"><img src="assets/delete_white_24dp.svg"></button></td>
+                            </tr>
+                            <tr>
+                            <th scope="row">4</th>
+                            <td>Nasi Ayam Geprek</td>
+                            <td>8000</td>
+                            <td>2</td>
+                            <td>0</td>
+                            <td>16000</td>
+                            <td><button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalupdate"><img src="assets/edit_white_24dp.svg"></button><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modaldelete" style="margin-left: 5px;"><img src="assets/delete_white_24dp.svg"></button></td>
+                            </tr>
+                        </tbody>
+                        </table> 
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="card text-dark bg-white mb-3" style="box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);">
+                        <div class="card-body">
+                            <div class="row">
+                            <div class="col-lg-3" style="margin-top: 5px;">
+                                <label for="subtotal">Sub Total</label>
+                            </div>
+                            <div class="col-lg-9" style="margin-top: 5px;"> 
+                                <input type="text" class="form-control"/>
+                            </div>
+                            <div class="col-lg-3" style="margin-top: 5px;">
+                                <label for="diskon">Diskon</label>
+                            </div>
+                            <div class="col-lg-9" style="margin-top: 5px;">
+                                <input type="text" class="form-control"/>
+                            </div>
+                            <div class="col-lg-3" style="margin-top: 5px;">
+                                <label for="grandtotal">Grand Total</label>
+                            </div>
+                            <div class="col-lg-9" style="margin-top: 5px;">
+                                <input type="text" class="form-control"/>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card text-dark bg-white mb-3" style="box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);">
+                        <div class="card-body">
+                            <div class="row">
+                            <div class="col-lg-3" style="margin-top: 5px;">
+                                <label for="subtotal">Tunai</label>
+                            </div>
+                            <div class="col-lg-9" style="margin-top: 5px;"> 
+                                <input type="text" class="form-control"/>
+                            </div>
+                            <div class="col-lg-3" style="margin-top: 5px;">
+                                <label for="diskon">Kembalian</label>
+                            </div>
+                            <div class="col-lg-9" style="margin-top: 5px;">
+                                <input type="text" class="form-control"/>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="card text-dark bg-white mb-3" style="box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);">
+                        <div class="card-body">
+                            <label for="exampleFormControlTextarea1" class="form-label">Note</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="11"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <button class="btn bg-danger" style="color: #fff;">Batal</button>
+                    <button class="btn btn-success" style="margin-top: 10px;">Proses Pembayaran</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,93 @@
+<app-topbar></app-topbar>
+
+<div class="container-fluid" style="margin-top: 20px;">
+    <div class="row">
+        <div class="col-lg-6">
+          <h4 style="color: #077c8c;">Setting Diskon</h4>
+        </div>
+        <div class="col-lg-6">
+            <button type="button" class="btn btn-success" style="background: #077c8c;border-bottom-style: none; float: right;">+ Buat Baru</button>
+            <button type="button" class="btn btn-primary" style="background: #fff;border-bottom-style: none; float: right; color: black;" (click)="pencarian()"><i class="fa fa-search" style="margin-right: 5px;"></i>Pencarian</button>
+        </div>
+        <div class="col-lg-12" *ngIf="showFilter">
+            <div class="card text-dark bg-white mb-3" style="margin-top: 20px; box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label for="produk">Karyawan</label>
+                            <input type="text" class="form-control" placeholder="Karyawan" (keyup)="datareload()" [(ngModel)]="modelParam.karyawan"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12" style="margin-top: 10px;">
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table datatable [dtOptions]="dtOptions" class="table table-striped mb-0">
+                  <thead>
+                    <tr>
+                      <th style="width: 5%;text-align: center;">No</th>
+                      <th style="width: 100%;">Karyawan</th>
+                      <th class="text-center" style="width: 10%;">Ngaji</th>
+                      <th class="text-center" style="width: 10%;">Kehadiran</th>
+                      <th class="text-center" style="width: 10%;">Rekruit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of data_database; let i = index;">
+                        <th class="text-center">{{i+1}}</th>
+                        <td>{{item.nama}}</td>
+                        <ng-container *ngIf="item.s_ngaji == 0; else elseNgaji">
+                          <td class="text-center"><a type="button" (click)="edit_ngaji(item.id_karyawan,item.s_ngaji)"><span><i class="fa fa-minus-square" style="color: #F46A6A;"></i></span></a></td>
+                        </ng-container>
+                        <ng-template #elseNgaji>
+                          <td class="text-center"><a type="button" (click)="edit_ngaji(item.id_karyawan,item.s_ngaji)"><span><i class="fa fa-check-square" style="color: #34c38f;"></i></span></a></td>
+                        </ng-template>
+
+                        <ng-container *ngIf="item.s_kehadiran == 0; else elseKehadiran">
+                          <td class="text-center"><a type="button" (click)="edit_kehadiran(item.id_karyawan,item.s_kehadiran)"><span><i class="fa fa-minus-square" style="color: #F46A6A;"></i></span></a></td>
+                        </ng-container>
+                        <ng-template #elseKehadiran>
+                          <td class="text-center"><a type="button" (click)="edit_kehadiran(item.id_karyawan,item.s_kehadiran)"><span><i class="fa fa-check-square" style="color: #34c38f;"></i></span></a></td>
+                        </ng-template>
+
+                        <ng-container *ngIf="item.s_rekruit == 0; else elseRekrut">
+                          <td class="text-center"><a type="button" (click)="edit_rekruit(item.id_karyawan,item.s_rekruit)"><span><i class="fa fa-minus-square" style="color: #F46A6A;"></i></span></a></td>
+                        </ng-container>
+                        <ng-template #elseRekrut>
+                          <td class="text-center"><a type="button" (click)="edit_rekruit(item.id_karyawan,item.s_rekruit)"><span><i class="fa fa-check-square" style="color: #34c38f;"></i></span></a></td>
+                        </ng-template>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th colspan="2" class="text-center">Total</th>
+                      <th class="text-center">{{total_ngaji.length}}</th>
+                      <th class="text-center">{{total_kehadiran.length}}</th>
+                      <th class="text-center">{{total_rekruit.length}}</th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+    
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+
+<ng-template #modaledit role="document" let-modal>
+  <div class="modal-header">
+      <h5 class="modal-title mt-0">Edit Karyawan</h5>
+      <button type="button" class="close" aria-hidden="true" #closebutton (click)="modal.dismiss('Cross click')">×</button>
+    </div>
+    <div class="modal-body">
+      <h6>Anda Yakin Ingin Merubah Data ?</h6>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Tutup</button>
+      <button type="button" class="btn btn-danger">Hapus</button>
+    </div>
+</ng-template>

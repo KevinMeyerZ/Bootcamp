@@ -1,0 +1,143 @@
+<app-topbar></app-topbar>
+
+<div class="container-fluid" style="margin-top: 20px;" *ngIf="!showForm">
+    <div class="row">
+        <div class="col-lg-6">
+            <h4 style="color: #009aad;">Voucher Customer</h4>
+        </div>
+        <div class="col-lg-6">
+            <button type="button" class="btn btn-success" style="background: #077c8c;border-bottom-style: none; float: right;" (click)="create()">+ Buat Baru</button>
+            <button type="button" class="btn btn-primary" style="background: #fff;border-bottom-style: none; float: right; color: black;" (click)="pencarian()"><i class="fa fa-search" style="margin-right: 5px;"></i>Pencarian</button>
+        </div>
+        <div class="col-lg-12" *ngIf="showFilter">
+            <div class="card text-dark bg-white mb-3" style="margin-top: 20px; box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label for="produk">Customer</label>
+                            <input type="text" class="form-control" placeholder="Customer" (keyup)="datareload()" [(ngModel)]="modelParam.customer"/>
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="produk">Voucher</label>
+                            <select class="form-control form-select" aria-label=".form-select-sm example" (change)="datareload()" [(ngModel)]="modelParam.voucher">
+                                <option value="" selected>Pilih Item</option>
+                                <option *ngFor="let item of database_voucher" value="{{item.id}}">{{item.nama}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="card" style=" box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%); margin-top: 10px;">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table datatable [dtOptions]="dtOptions" class="table table-striped mb-0">
+                            <thead>
+                            <tr>
+                                <th style="width: 5%;text-align: center;">No</th>
+                                <th>Customer</th>
+                                <th style="width: 20%; text-align: left;">Voucher</th>
+                                <th class="text-center">Jumlah</th>
+                                <th style="width: 30%; text-align: left;">Periode</th>
+                                <th style="width: 18%; text-align: left;"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of data_database; let i = index;">
+                                    <th class="text-center">{{i+1}}</th>
+                                    <td style="text-align: left;">{{item.nama_customer}}</td>
+                                    <td style="text-align: left;">{{item.nama_promo}}</td>
+                                    <td class="text-center">{{item.jumlah}}</td>
+                                    <td style="text-align: left;">{{item.tgl_awal | date: 'dd/MM/yyyy' }} s/d {{item.tgl_akhir | date: 'dd/MM/yyyy'}}</td>
+                                    <td style="text-align: right;">
+                                    <button class="btn btn-warning btn-sm" type="button" style="margin-left: 5px;" (click)="print(item.foto)"><i class="fa fa-print"></i></button>
+                                    <button class="btn btn-dark btn-sm" type="button" style="margin-left: 5px;" (click)="notifikasi()"><i class="fa fa-bell"></i></button>
+                                    <button class="btn btn-success btn-sm btn-voucher1" role="button" style="margin-left: 5px;" (click)="edit(item)"><i class="fa fa-pencil-alt btn-voucher" style="color: #fff;"></i></button>
+                                    <button class="btn btn-danger btn-sm" type="button" style="margin-left: 5px;" (click)="deleteModal(modaldelete, item.id_voucher)"><i class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-12" *ngIf="showForm">
+    <div class="card" style="margin-top:20px; box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);">
+        <div class="card-body">
+            <h4 class="card-title">{{pageTitle}}</h4>
+            <form [formGroup]="tambahForm" (ngSubmit)="submit()" novalidate> 
+                <div class="row">       
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-12">
+                                <input *ngIf="edit_v == 1" type="text" placeholder="id" class="form-control" formControlName="id" [(ngModel)]="model.id_voucher" hidden>
+                                <label for="voucher" style="color: #009aad;">Customer<label style="color: red;">*</label></label>
+                                <select class="form-control form-select" aria-label=".form-select-sm example" formControlName="customer" [(ngModel)]="model.id_customer">
+                                <option value="" selected>Pilih Customer</option>
+                                <option *ngFor="let item of database_customer" value="{{item.id}}">{{item.nama}}</option>
+                                </select>
+                            </div>
+                            <div  class="col-12" style="margin-top: 10px;">
+                                <label for="produk" style="color: #009aad;">Rentang Waktu<label style="color: red;">*</label></label>
+                                <input type="text" class="form-control" name="daterangeInput" daterangepicker [options]="options" (selected)="selectedDate($event, daterange)"/>
+                            </div>
+                            <div  class="col-12">
+                                <label  class="form-label" style="color: #009aad;">Jumlah<label style="color: red;">*</label></label>
+                                <input  type="number" placeholder="Jumlah" class="form-control" formControlName="jumlah" [(ngModel)]="model.jumlah">
+                            </div>
+                            <div  class="col-12">
+                                <label  class="form-label" style="color: #009aad;">Catatan<label style="color: red;">*</label></label>
+                                <ckeditor name="catatan" formControlName="catatan" [(ngModel)]="model.catatan"></ckeditor>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-12">
+                                <label for="voucher" style="color: #009aad;">Voucher<label style="color: red;">*</label></label>
+                                <select class="form-control form-select" aria-label=".form-select-sm example" (change)="p_voucher($event.target.value)" formControlName="voucher" [(ngModel)]="model.id_promo">
+                                <option value="" selected>Pilih Item</option>
+                                <option *ngFor="let item of database_voucher" value="{{item.id}}">{{item.nama}}</option>
+                            </select>
+                            </div>
+                            <div  class="col-12">
+                                <label  class="form-label" style="color: #009aad;">Nominal</label>
+                                <input  type="text" placeholder="Nominal" class="form-control" formControlName="nominal" [(ngModel)]="model.harga" disabled>
+                            </div>
+                            <div class="col-12">
+                                <img [src]="imageSrc" *ngIf="imageSrc" class="mt-4" style="height: 275px;border-radius: .8rem;cursor: pointer;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12" style="margin-top: 20px;">
+                        <button class="btn btn-light" (click)="index()" style="float: right;">
+                            <i class="fa fa-chevron-left font-size-14 align-middle mr-2"></i>
+                            Kembali
+                        </button>
+                        <button type="submit" class="btn btn-primary" *ngIf="tambah == 1" [disabled]="!tambahForm.valid" style="float: right; margin-right: 10px;">Simpan</button>
+                        <button type="button" class="btn btn-success" *ngIf="edit_v == 1" [disabled]="!tambahForm.valid" style="float: right; margin-right: 10px;" (click)="submit_edit()">Simpan Edit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<ng-template #modaldelete role="document" let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title mt-0">Hapus Promo</h5>
+        <button type="button" class="close" aria-hidden="true" #closebutton (click)="modal.dismiss('Cross click')">×</button>
+      </div>
+      <div class="modal-body">
+        <h6>Anda Yakin Ingin Menghapus Data ?</h6>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Tutup</button>
+        <button type="button" class="btn btn-danger" (click)="b_hapus()">Hapus</button>
+      </div>
+</ng-template>

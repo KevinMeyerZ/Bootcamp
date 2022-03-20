@@ -1,0 +1,57 @@
+
+<nav class="navbar-header navbar-expand-lg" style="background-color: #f8f9fa;">
+    <!-- LOGO -->
+    <div class="d-flex">  
+        <div class="navbar-brand-box">
+            <a routerLink="/jav_baru/dashboard" class="logo">
+                <img src="assets/Java Code.png" alt="" height="45">
+            </a>
+        </div>
+        <div class="dropdown d-none d-lg-block ml-2" ngbDropdown>
+            <button type="button" class="btn header-item" ngbDropdownToggle data-toggle="dropdown" aria-haspopup="false"
+                aria-expanded="false">
+                Setting
+                <i class="mdi mdi-chevron-down"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                <!-- display: true ? block:none -->
+                <a *ngIf="menu == true" class="dropdown-item" [routerLink]="['/jav_baru/menu']">Menu</a>
+                <a *ngIf="customer == true" class="dropdown-item" [routerLink]="['/jav_baru/customer']">Customer</a>
+                <a *ngIf="promo == true" class="dropdown-item" [routerLink]="['/jav_baru/promo']">Promo</a>
+                <a *ngIf="diskon == true" class="dropdown-item" [routerLink]="['/jav_baru/diskon']">Diskon</a>
+                <a *ngIf="voucher == true" class="dropdown-item" [routerLink]="['/jav_baru/voucher']">Voucher</a>
+            </div>
+        </div>
+        <div class="dropdown d-none d-lg-block ml-2" ngbDropdown>
+            <button type="button" class="btn header-item" ngbDropdownToggle data-toggle="dropdown" aria-haspopup="false"
+                aria-expanded="false">
+                Laporan
+                <i class="mdi mdi-chevron-down"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                <a *ngIf="penjualan_menu == true" class="dropdown-item" [routerLink]="['/jav_baru/penjualan_menu']">Penjualan Menu</a>
+                <a *ngIf="penjualan_customer == true" class="dropdown-item" [routerLink]="['/jav_baru/penjualan_customer']">Penjualan Customer</a>
+                <a class="dropdown-item" [routerLink]="['/jav_baru/penjualan']">Penjualan</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex" style="margin-right: 50px;">
+        <div class="dropdown d-inline-block" ngbDropdown>
+        <button type="button" class="btn header-item" ngbDropdownToggle id="page-header-user-dropdown">
+            <img class="rounded-circle header-profile-user" src="{{foto_p}}" alt="Header Avatar">
+            <span class="d-none d-xl-inline-block ml-1" style="color: #009aad;">{{nama_p}}</span>
+            <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
+            <a *ngIf="user == true" class="dropdown-item" [routerLink]="['/jav_baru/user']"><i
+                class="bx bx-wallet font-size-16 align-middle mr-1"></i>User</a>
+            <a *ngIf="hak_akses == true" class="dropdown-item d-block" [routerLink]="['/jav_baru/hak_akses']" type="button"><i
+                class="bx bx-wrench font-size-16 align-middle mr-1"></i> Hak Akses</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item text-danger" type="button" (click)="logout()"><i
+                class="bx bx-power-off font-size-16 align-middle mr-1 text-danger"></i> Logout</a>
+        </div>
+        </div>
+    </div>
+</nav>

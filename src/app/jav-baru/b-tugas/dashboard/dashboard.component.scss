@@ -1,0 +1,14 @@
+.header-card:hover{
+    transform:scale(1.1)
+}
+.card{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+    word-wrap:break-word;
+    background-color:#fff;
+    background-clip:border-box;
+    border:1px solid rgba(0,0,0,.125);
+    box-shadow:.6px .1rem .5rem hsla(0,0%,59.2%,.36)!important
+}

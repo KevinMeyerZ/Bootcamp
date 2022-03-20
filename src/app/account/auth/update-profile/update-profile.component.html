@@ -1,0 +1,87 @@
+<app-topbarku></app-topbarku>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-2">
+      <app-sidebarku></app-sidebarku>
+    </div>
+    <div class="col-lg-10">
+        <div class="col-lg-12">
+            <div class="card text-dark bg-white mb-3" style="margin-top: 20px; box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);">
+                <div class="card-body">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8 col-lg-6 col-xl-10">
+                            <form [formGroup]="requiredForm" (ngSubmit)="submit()" novalidate>
+                                <ngb-alert type="success" *ngIf="successmsg" [dismissible]="false">Registeration successfull.
+                                </ngb-alert>
+                
+                                <ngb-alert type="danger" *ngIf="error" [dismissible]="false">{{ error }}</ngb-alert>
+                            
+                                <div class="p-2">  
+                                    <div class="text-center">
+                                        <h5>Update Data Profile</h5>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-8 col-lg-6 col-xl-6"> 
+                                            <div class="form-group mb-3" hidden>
+                                                <label for="username">Username </label>
+                                                <input type="text" formControlName="username" class="form-control"
+                                                    placeholder="username" />
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="NamaBelakang">Nama</label>
+                                                <input type="text" formControlName="nama" class="form-control"
+                                                    placeholder="Nama" />
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="jenis_kelamin">Jenis Kelamin</label>
+                                                <input type="text" formControlName="jenis_kelamin" class="form-control"
+                                                    placeholder="Jenis Kelamin" />
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="no_telp">No Telepon</label>
+                                                <input type="text" formControlName="no_telp" class="form-control"
+                                                    placeholder="No Telepon" />
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="email">Email</label>
+                                                <input type="email" formControlName="email" class="form-control"
+                                                    placeholder="Email" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8 col-lg-6 col-xl-6"> 
+                                            <div class="form-group mb-3">
+                                                <label for="email">Alamat</label>
+                                                <input type="text" formControlName="alamat" class="form-control"
+                                                    placeholder="Alamat" />
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="email">Password Lama</label>
+                                                <input type="password" formControlName="password_lama" class="form-control"
+                                                    placeholder="Password Lama" />
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="email">Password Baru</label>
+                                                <input type="password" formControlName="password" class="form-control"
+                                                    placeholder="Password" />
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="email">Confirm Password Baru</label>
+                                                <input type="password" formControlName="c_password" class="form-control"
+                                                    placeholder="Confirm Password" />
+                                            </div>
+                                            <div class="col-xl-4 mt-3" style="float: right;">
+                                                <button class="btn btn-primary btn-block" type="submit">Update</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>

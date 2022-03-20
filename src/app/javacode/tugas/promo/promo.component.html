@@ -1,0 +1,165 @@
+<app-topbar></app-topbar>
+
+<div class="container-fluid" style="margin-top: 20px;" *ngIf="!showForm">
+    <div class="row">
+        <div class="col-lg-6">
+            <h4 style="color: #077c8c;">Promo Menu</h4>
+        </div>
+        <div class="col-lg-6">
+            <button type="button" class="btn btn-success" style="background: #077c8c;border-bottom-style: none; float: right;" (click)="create()">+ Buat Baru</button>
+            <button type="button" class="btn btn-primary" style="background: #fff;border-bottom-style: none; float: right; color: black;" (click)="pencarian()"><i class="fa fa-search" style="margin-right: 5px;"></i>Pencarian</button>
+        </div>
+        <div class="col-lg-12" *ngIf="showFilter">
+            <div class="card text-dark bg-white mb-3" style="margin-top: 20px; box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label for="produk">Nama</label>
+                            <input type="text" class="form-control" placeholder="Nama" (keyup)="datareload()" [(ngModel)]="modelParam.nama"/>
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="produk">Tipe</label>
+                            <select class="form-control form-select" aria-label=".form-select-sm example" (change)="datareload()" [(ngModel)]="modelParam.tipe">
+                                <option value="" selected>Pilih Item</option>
+                                <option value="1">Diskon</option>
+                                <option value="2">Voucher</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12" style="margin-top: 25px;">
+            <div class="card text-dark bg-white mb-3" style="box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);">
+            <div class="card-body">
+                <div class="table-responsive" style="margin-top: 10px;">
+                    <table datatable [dtOptions]="dtOptions" class="table mb-0">
+                    <thead>
+                        <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Type</th>
+                        <th>Diskon/Harga</th>
+                        <th>Kadaluarsa</th>
+                        <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of data_database; let i = index;">
+                        <th scope="row">{{i+1}}</th>
+                        <td>{{item.nama}}</td>
+                        <ng-container *ngIf="item.tipe == 1; else elseTipe">
+                            <td>Diskon</td>
+                        </ng-container>
+                        <ng-template #elseTipe>
+                            <td>Voucher</td>
+                        </ng-template>
+                        <ng-container *ngIf="item.tipe == 1; else elseBlock">
+                        <td>{{item.diskon}} %</td>
+                        </ng-container>
+                        <ng-template #elseBlock>
+                            <td>{{item.harga}}</td>
+                        </ng-template>
+                        
+                        <td>{{item.kadaluarsa}} Days</td>
+                        <td class="text-end">
+                        <button class="btn btn-success btn-sm btn-voucher1" type="button" style="margin-right: 5px;" (click)="edit(item)"><i class="fa fa-pencil-alt btn-voucher" style="color: #fff;"></i></button>
+                        <button class="btn btn-danger btn-sm btn-voucher1" type="button" style="margin-right: 5px;" (click)="deleteModal(modaldelete, item.id_promo)"><i class="fa fa-trash btn-voucher"></i></button></td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-12" *ngIf="showForm">
+    <div class="card" style="margin-top:20px; box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);">
+        <div class="card-body">
+            <h4 class="card-title">{{pageTitle}}</h4>
+            <form [formGroup]="tambahForm" (ngSubmit)="submit()" novalidate> 
+                <div class="row">       
+                    <div class="col-6">
+                        <div class="row">
+                            <div  class="col-12">
+                                <input *ngIf="edit_v == 1"  type="text" placeholder="Nama" class="form-control" formControlName="id" [(ngModel)]="model.id_promo" hidden>
+                                <label  class="form-label">Nama</label>
+                                <input  type="text" placeholder="Nama" class="form-control" formControlName="nama" [(ngModel)]="model.nama">
+                            </div>
+                            <div  class="col-12" style="margin-top: 10px;">
+                                <label  class="form-label">Tipe</label>
+                            </div>
+                            <div  class="col-12">
+                                <div role="group" class="btn-group btn-group-example mb-3" *ngIf="tambah == 1">
+                                    <button type="button" id="diskon_button{{1}}" type="button" [ngClass]="diskon_button" (click)="status_menu('1')">Diskon</button>
+                                    <button type="button" id="diskon_button{{2}}" type="button" [ngClass]="diskon_button" (click)="status_menu('2')">Voucher</button>
+                                </div>
+                                <div role="group" class="btn-group btn-group-example mb-3" *ngIf="edit_v == 1">
+                                    <button type="button" *ngIf="p_tipe == 1" id="diskon_button{{1}}" type="button" [ngClass]="diskon_button2" (click)="status_menu('1')">Diskon</button>
+                                    <button type="button" *ngIf="p_tipe == 2" id="diskon_button{{2}}" type="button" [ngClass]="diskon_button2" (click)="status_menu('2')">Voucher</button>
+                                    <button type="button" *ngIf="p_tipe == 2" id="diskon_button{{1}}" type="button" [ngClass]="diskon_button" (click)="status_menu('1')">Diskon</button>
+                                    <button type="button" *ngIf="p_tipe == 1" id="diskon_button{{2}}" type="button" [ngClass]="diskon_button" (click)="status_menu('2')">Voucher</button>
+                                </div>
+                            </div>
+                            <div  class="col-12">
+                                <label  class="form-label">Diskon</label>
+                                <input  type="text" placeholder="Diskon" class="form-control" formControlName="p_diskon" [(ngModel)]="model.diskon">
+                            </div>
+                            <div class="col-12">
+                                <label  class="form-label">Harga</label>
+                                <div  class="input-group">
+                                    <div  class="input-group-prepend">
+                                        <span  class="input-group-text">Rp</span>
+                                    </div>
+                                    <input  type="text" placeholder="Harga" class="form-control" formControlName="harga" [(ngModel)]="model.harga">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label for="kadaluarsa">kadaluarsa</label>
+                                <select class="form-control form-select" aria-label=".form-select-sm example" formControlName="kadaluarsa" [(ngModel)]="model.kadaluarsa"> 
+                                    <option value="" selected>-- Pilih Hari --</option>
+                                    <option value="1">Day 1</option>
+                                    <option value="2">Day 2</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="mt-4" style="background: #dcdcdc;height: 300px;border-radius: .8rem;cursor: pointer;" (click)="gambar.click()">
+                                    <h2 class="text-center"><i class="fa fa-image" style="margin-top: 95px;"></i><br>Upload Image</h2>
+                                    <input type="file" style="display: none;" (change)="fileChangeEvent($event)" #gambar>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button class="btn btn-light" (click)="index()" style="float: right;">
+                            <i class="fa fa-chevron-left font-size-14 align-middle mr-2"></i>
+                            Kembali
+                        </button>
+                        <button type="submit" class="btn btn-primary" *ngIf="tambah == 1" style="float: right; margin-right: 10px;" [disabled]="!tambahForm.valid">Simpan</button>
+                        <button type="button" class="btn btn-success" *ngIf="edit_v == 1" style="float: right; margin-right: 10px;" (click)="submit_edit()">Simpan Edit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<ng-template #modaldelete role="document" let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title mt-0">Hapus Promo</h5>
+        <button type="button" class="close" aria-hidden="true" #closebutton (click)="modal.dismiss('Cross click')">×</button>
+      </div>
+      <div class="modal-body">
+        <h6>Anda Yakin Ingin Menghapus Data ?</h6>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Tutup</button>
+        <button type="button" class="btn btn-danger" (click)="b_hapus()">Hapus</button>
+      </div>
+</ng-template>

@@ -1,0 +1,272 @@
+<app-topbar></app-topbar>
+
+<div class="container-fluid" style="margin-top: 20px;" *ngIf="!showForm">
+    <div class="row">
+        <div class="col-lg-6">
+            <h4 style="color: #009aad;">Setting Menu</h4>
+        </div>
+        <div class="col-lg-6">
+            <button type="button" class="btn btn-success" style="background: #009aad;border-bottom-style: none; float: right;" (click)="create()">+ Buat Baru</button>
+            <button type="button" class="btn btn-primary" style="background: #fff;border-bottom-style: none; float: right; color: black;" (click)="pencarian()"><i class="fa fa-search" style="margin-right: 5px;"></i>Pencarian</button>
+        </div>
+        <div class="col-lg-12" *ngIf="showFilter">
+            <div class="card text-dark bg-white mb-3" style="margin-top: 20px; box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);">
+                <div class="card-body">
+                    <div class="row">
+                      <div class="col-lg-3">
+                        <label for="produk" style="color: #009aad;">Nama Menu</label>
+                        <input type="text" class="form-control" placeholder="Nama Produk" (keyup)="datareload()" [(ngModel)]="modelParam.menu"/>
+                      </div>
+                        <div class="col-lg-3">
+                            <label for="produk" style="color: #009aad;">Kategori Menu</label>
+                            <select class="form-control form-select" aria-label=".form-select-sm example" (change)="datareload()" [(ngModel)]="modelParam.kategori">
+                                <option value="" selected>Pilih Kategori</option>
+                                <option value="makanan">Makanan</option>
+                                <option value="minuman">Minuman</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="card" style="margin-top: 20px; box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table datatable [dtOptions]="dtOptions" class="table table-striped mb-0">
+                            <thead>
+                            <tr>
+                                <th style="width: 5%;text-align: center;">No</th>
+                                <th style="width: 15%; text-align: left;">Produk</th>
+                                <th style="width: 10%; text-align: left;">Kategori</th>
+                                <th class="text-center">Harga</th>
+                                <th class="text-center" style="width: 20%;">Topping</th>
+                                <th class="text-center" style="width: 20%;">Level</th>
+                                <th style="width: 20%; text-align: left;">Deskripsi</th>
+                                <th>Gambar</th>
+                                <th style="width: 10%; text-align: left;"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let list of data_database; let i = index;">
+                                    <th class="text-center">{{i+1}}</th>
+                                    <td style="text-align: left;">{{list.nama}}</td>
+                                    <td style="text-align: left;">{{list.kategori}}</td>
+                                    <td class="text-center">{{list.harga}}</td>
+                                    <td class="text-center"><ng-container *ngFor="let item of list.detail"><ng-container *ngIf="item.tipe == 'topping'">{{item.detail_nama}}</ng-container></ng-container></td>
+                                    <td class="text-center"><ng-container *ngFor="let item of list.detail"><ng-container *ngIf="item.tipe == 'level'">{{item.detail_nama}}</ng-container></ng-container></td>
+                                    <td style="text-align: left;">{{list.deskripsi}}</td>
+                                    <td>
+                                        <p *ngIf="list.foto == ''; else danger" class="text-center">-</p>
+                                        
+                                        <ng-template #danger><img width="150" height="100"  src="http://localhost/training-angular-9/api/{{list.foto}}" ></ng-template>
+                                    </td>
+                                    <td style="text-align: right;">
+                                    <button class="btn btn-success btn-sm btn-voucher1" role="button" style="margin-left: 5px;" (click)="edit(list)"><i class="fa fa-pencil-alt btn-voucher" style="color: #fff;"></i></button>
+                                    <button class="btn btn-danger btn-sm" type="button" style="margin-left: 5px;" (click)="deleteModal(modaldelete, list.id_menu)"><i class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-12" *ngIf="showForm">
+    <div class="card" style="margin-top:20px; box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);">
+        <div class="card-body">
+            <h4 class="card-title" style="color: #009aad;">{{pageTitle}}</h4>
+            <form [formGroup]="tambahForm" (ngSubmit)="submit()" novalidate> 
+                <div class="row">       
+                    <div class="col-6">
+                        <div class="row">
+                            <div  class="col-12">
+                                <input *ngIf="edit_v == 1"  type="text" placeholder="Nama Menu" class="form-control" formControlName="id" [(ngModel)]="model.id_menu" hidden>
+                                <label  class="form-label" style="color: #009aad;">Nama <label style="color: red;">*</label></label>
+                                <input  type="text" placeholder="Nama Menu" class="form-control" formControlName="nama_menu" [(ngModel)]="model.nama">
+                                <div *ngIf="f.nama_menu.touched && f.nama_menu.invalid" style="color: red;">
+                                    <div *ngIf="f.nama_menu.errors.required">
+                                      *Nama Menu Harus Diisi.
+                                    </div>
+                                </div>
+                            </div>
+                            <div  class="col-12" style="margin-top: 10px;">
+                                <label  class="form-label" style="color: #009aad;">Kategori</label>
+                            </div>
+                            <div  class="col-12">
+                                <div role="group" class="btn-group btn-group-example mb-3" *ngIf="edit_v == 1">
+                                    <button id="kat_button{{pageIdk}}" type="button" [ngClass]="kat_button2" (click)="kategori_click(pageIdk)">{{pageKategori}}</button>
+                                    <ng-container *ngFor="let item of sc_kategori">
+                                    <button *ngIf="pageIdk != item.id" id="kat_button{{item.id}}" type="button" [ngClass]="kat_button" (click)="kategori_click(item.id)">{{item.nama_kategori}}</button>
+                                    </ng-container>
+                                </div>
+                                <div role="group" class="btn-group btn-group-example mb-3" *ngIf="tambah == 1">
+                                    <button *ngFor="let item of sc_kategori" id="kat_button{{item.id}}" type="button" [ngClass]="kat_button" (click)="kategori_click(item.id)">{{item.nama_kategori}}</button>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label  class="form-label" style="color: #009aad;">Harga<label style="color: red;">*</label></label>
+                                        <div  class="input-group">
+                                            <div  class="input-group-prepend">
+                                                <span  class="input-group-text">Rp</span>
+                                            </div>
+                                            <input  type="text"
+                                            mvndrMatCurrencyFormat
+                                            [allowNegative]="false"
+                                            [currencyCode]="'Rp'"
+                                            [value]="usAmount"
+                                            (blur)="updateUSAmount($event)" placeholder="Harga" class="form-control" formControlName="harga" [(ngModel)]="model.harga">
+                                        </div>
+                                        <div *ngIf="f.harga.touched && f.harga.invalid" style="color: red;">
+                                            <div *ngIf="f.harga.errors.required">*Harga harus diisi.</div>
+                                            <div *ngIf="f.harga.errors.pattern">*Format Harus Angka.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12" style="margin-top: 10px;">
+                                <label  class="form-label" style="color: #009aad;">Deskripsi Singkat<label style="color: red;">*</label></label>
+                                <textarea placeholder="Deskripsi Singkat" class="form-control" formControlName="dekripsi" [(ngModel)]="model.deskripsi"></textarea>
+                                <div *ngIf="f.dekripsi.touched && f.dekripsi.invalid" style="color: red;">
+                                    <div *ngIf="f.dekripsi.errors.required">
+                                      *Deskripsi Menu Harus Diisi.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-12">
+                                <button type="button" class="btn btn-success" *ngIf="imageSrc" (click)="gambarku.click()">
+                                    Edit Gambar
+                                    <input type="file" style="display: none;" (change)="fileChangeEvent($event)" #gambarku>
+                                </button>
+                            </div>
+                            <div class="col-12">
+                                <div class="mt-4" style="background: #dcdcdc;height: 227px;border-radius: .8rem;cursor: pointer;" (click)="gambar.click()" *ngIf="!imageSrc">
+                                    <h2 class="text-center"><i class="fa fa-image" style="margin-top: 65px;"></i><br>Upload Image</h2>
+                                    <input type="file" style="display: none;" (change)="fileChangeEvent($event)" #gambar>
+                                </div>
+                                <img [src]="imageSrc" *ngIf="imageSrc" class="mt-4" style="width: 250px; height: 200px;">
+                            </div>
+                            <div  class="col-12" style="margin-top: 10px;">
+                                <label  class="form-label" style="color: #009aad;">Status</label>
+                            </div>
+                            <div  class="col-12">
+                                <div role="group" class="btn-group btn-group-example mb-3" *ngIf="tambah == 1">
+                                    <button type="button" id="ada_button{{1}}" type="button" [ngClass]="ada_button" (click)="status_menu('1')">Ada</button>
+                                    <button type="button" id="ada_button{{2}}" type="button" [ngClass]="ada_button" (click)="status_menu('2')">Habis</button>
+                                </div>
+                                <div role="group" class="btn-group btn-group-example mb-3" *ngIf="edit_v == 1">
+                                    <button type="button" *ngIf="status == 1" id="ada_button{{2}}" type="button" [ngClass]="ada_button2" (click)="status_menu('1')">Ada</button>
+                                    <button type="button" *ngIf="status == 2" id="ada_button{{1}}" type="button" [ngClass]="ada_button2" (click)="status_menu('2')">Habis</button>
+                                    <button type="button" *ngIf="status == 2" id="ada_button{{1}}" type="button" [ngClass]="ada_button" (click)="status_menu('1')">Ada</button>
+                                    <button type="button" *ngIf="status == 1" id="ada_button{{2}}" type="button" [ngClass]="ada_button" (click)="status_menu('2')">Habis</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <table class="table mb-0" *ngIf="tambah == 1">
+                                <thead>
+                                <tr>
+                                    <th scope="col"><a type="button" (click)="addSplit()"><i class="fa fa-plus-square i-menu" style="color: #34c38f;"></i></a></th>
+                                    <th scope="col">Keterangan</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Harga</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container [formGroup]="splitData">
+                                        <ng-container formArrayName="splitValue" *ngFor="let datacok of  splitdata().controls; let i=index;">
+                                            <tr  [formGroupName]="i">
+                                                <th scope="row"><a type="button" (click)="deleteSplit(i)"><i class="fa fa-minus-square i-menu" style="color: #F46A6A;"></i></a></th>
+                                                <td><input type="text" placeholder="Keterangan" class="form-control" formControlName="keterangan"></td>
+                                                <td><select class="form-control" formControlName="tipe">
+                                                    <option value="" selected>Pilih Data</option>
+                                                    <option value="1">Topping</option>
+                                                    <option value="2">Level</option>
+                                                    </select></td>
+                                                <td><input type="text" placeholder="Harga" class="form-control" formControlName="harga"></td>
+                                            </tr>
+                                        </ng-container>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                            <table class="table mb-0" *ngIf="edit_v == 1">
+                                <thead>
+                                <tr>
+                                    <th scope="col"><a type="button" (click)="addSplit()"><i class="fa fa-plus-square i-menu" style="color: #34c38f;"></i></a></th>
+                                    <th scope="col">Keterangan</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Harga</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container [formGroup]="splitData2">
+                                        <ng-container formArrayName="splitValue2" *ngFor="let datacok of  splitdata2().controls; let i=index;">
+                                            <tr [formGroupName]="i">
+                                                <th scope="row"><a type="button" (click)="delete_topping(datacok.value['id'], i)"><i class="fa fa-minus-square i-menu" style="color: #F46A6A;"></i></a></th>
+                                                <td hidden><input type="text" placeholder="id_menu" class="form-control" formControlName="id"></td>
+                                                <td><input type="text" placeholder="Keterangan" class="form-control" formControlName="keterangan"></td>
+                                                <td><select class="form-control" formControlName="tipe">
+                                                    <option value="" selected>Pilih Data</option>
+                                                    <option value="1">Topping</option>
+                                                    <option value="2">Level</option>
+                                                    </select></td>
+                                                <td><input type="text" placeholder="Harga" class="form-control" formControlName="harga"></td>
+                                            </tr>
+                                        </ng-container>
+                                    </ng-container>
+                                    <ng-container [formGroup]="splitData">
+                                        <ng-container formArrayName="splitValue" *ngFor="let datacok of  splitdata().controls; let i=index;">
+                                            <tr  [formGroupName]="i">
+                                                <th scope="row"><a type="button" (click)="deleteSplit(i)"><i class="fa fa-minus-square i-menu" style="color: #F46A6A;"></i></a></th>
+                                                <td><input type="text" placeholder="Keterangan" class="form-control" formControlName="keterangan"></td>
+                                                <td><select class="form-control" formControlName="tipe">
+                                                    <option value="" selected>Pilih Data</option>
+                                                    <option value="1">Topping</option>
+                                                    <option value="2">Level</option>
+                                                    </select></td>
+                                                <td><input type="text" placeholder="Harga" class="form-control" formControlName="harga"></td>
+                                            </tr>
+                                        </ng-container>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12" style="margin-top: 20px;">
+                    <button class="btn btn-light" (click)="index()" style="float: right;">
+                        <i class="fa fa-chevron-left font-size-14 align-middle mr-2"></i>
+                        Kembali
+                    </button>
+                    <button type="submit" class="btn btn-primary" *ngIf="tambah == 1" [disabled]="!tambahForm.valid" style="float: right; margin-right: 10px;">Simpan</button>
+                    <button type="button" class="btn btn-success" *ngIf="edit_v == 1" [disabled]="!tambahForm.valid" style="float: right; margin-right: 10px;" (click)="submit_edit()">Simpan Edit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<ng-template #modaldelete role="document" let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title mt-0">Hapus Produk</h5>
+        <button type="button" class="close" aria-hidden="true" #closebutton (click)="modal.dismiss('Cross click')">×</button>
+      </div>
+      <div class="modal-body">
+        <h6>Anda Yakin Ingin Menghapus Data ?</h6>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Tutup</button>
+        <button type="button" class="btn btn-danger" (click)="hapus()">Hapus</button>
+      </div>
+</ng-template>

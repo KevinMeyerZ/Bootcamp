@@ -1,0 +1,63 @@
+<div class="container-fluid">
+    <div class="card" style="margin: 2rem 0rem;">
+        <div class="card-header">
+            Venturo - Laporan penjualan tahunan per menu
+        </div>
+        <div class="card-body">
+            <form action="" method="get">
+                <div class="row">
+                    <div class="col-2">
+                        <div class="form-group">
+                            <select id="my-select" class="form-control" name="tahun">
+                                <option value="">Pilih Tahun</option>
+                                <option value="2021">2021</option>
+                                <option value="2022" selected="">2022</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary">
+                            Tampilkan
+                        </button>
+                        <a href="http://tes-web.landa.id/intermediate/menu" target="_blank" rel="Array Menu" class="btn btn-secondary">
+                            Json Menu
+                        </a>
+                        <a href="http://tes-web.landa.id/intermediate/transaksi?tahun=2022" target="_blank" rel="Array Transaksi" class="btn btn-secondary">
+                            Json Transaksi
+                        </a>
+                    </div>
+                </div>
+            </form>
+            <hr>
+            <div class="table-responsive">
+                <table class="table table-bordered" style="margin: 0;">
+                    <thead>
+                        <tr style="background-color: black; color: #fff;">
+                            <th rowspan="2" style="text-align:center;vertical-align: middle;width: 250px;">Menu</th>
+                            <th [attr.colspan]="data_bawah.length" style="text-align: center;">Periode {{data_bulan}} {{data_tahun}}
+                            </th>
+                            <th rowspan="2" style="text-align:center;vertical-align: middle;width:75px">Total</th>
+                        </tr>
+                        <tr style="background-color: black; color: #fff;">
+                            <ng-container *ngFor="let list of data_bawah">
+                                <th style="text-align: center;width: 75px;">{{list.hari}}</th>
+                            </ng-container>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td [attr.colspan]="data_bawah.length+2" style="text-align: left; background-color: #E2E3E5;"><b>Makanan</b></td>
+                        </tr>
+                        <tr *ngFor="let data of data_menupunya">
+                            <td>{{data_koreksi(data.menu)}}</td>
+                        </tr>
+                        <tr>
+                            <td [attr.colspan]="data_bawah.length+2" style="text-align: left; background-color: #E2E3E5;"><b>Minuman</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

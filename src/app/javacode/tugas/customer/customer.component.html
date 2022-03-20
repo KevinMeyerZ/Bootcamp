@@ -1,0 +1,96 @@
+<app-topbar></app-topbar>
+<style>
+  .bg-custom{
+    background: #077c8c;
+    color: #fff;
+    border-color: #077c8c;
+  }
+</style>
+<div class="container-fluid" style="margin-top: 20px;">
+    <div class="row">
+        <div class="col-lg-6">
+          <h4 style="color: #077c8c;">Setting Customer</h4>
+        </div>
+        <div class="col-lg-6">
+            <button type="button" class="btn btn-primary" style="background: #fff;border-bottom-style: none; float: right; color: black;" (click)="pencarian()"><i class="fa fa-search" style="margin-right: 5px;"></i>Pencarian</button>
+        </div>
+        <div class="col-lg-12" *ngIf="showFilter">
+            <div class="card text-dark bg-white mb-3" style="margin-top: 20px; box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label for="produk">Nama</label>
+                            <input type="text" class="form-control" placeholder="Nama" (keyup)="reloadtabel()" [(ngModel)]="modelParam.namaku"/>
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="produk">Status</label>
+                            <select class="form-control form-select" aria-label=".form-select-sm example" (change)="reloadtabel()" [(ngModel)]="modelParam.statusku">
+                                <option value="" selected>Pilih Item</option>
+                                <option value="0">Verifikasi</option>
+                                <option value="1">Unverifikasi</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12" style="margin-top: 10px;">
+          <div class="card">
+            <div class="card-body">
+    
+              <div class="table-responsive">
+                <table datatable [dtOptions]="dtOptions" class="table table-striped mb-0">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Nama</th>
+                      <th>Email</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of data_database; let i =index;">
+                      <th scope="row">{{i+1}}</th>
+                      <td>{{item.nama}}</td>
+                      <td>{{item.email}}</td>
+                      <td><a type="button" (click)="verfikasiModal(modalverifikasi, item.id, item.status)"><span *ngIf="item.status == 0;else danger" class="badge badge-success" style="background-color: #009aad;">Verifikasi</span></a></td>
+                      <ng-template #danger><a type="button" (click)="verfikasiModal(modalverifikasi, item.id, item.status)"><span class="badge badge-warning">Belum Verifikasi</span></a></ng-template>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+    
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+
+<ng-template #modalverifikasi role="document" let-modal>
+  <div class="modal-header" style="background: #077c8c;">
+      <h5 class="modal-title mt-0" style="color: #fff;">Form Verifikasi</h5>
+      <button type="button" class="close" aria-hidden="true" style="color: #fff;" #closebutton (click)="modal.dismiss('Cross click')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-12">
+            <img src="assets/ktp.jpg" alt="" class="mt-4" style="height: 257px;border-radius: .8rem;cursor: pointer; margin-left: auto; margin-right: auto;">
+        </div>
+        <div  class="col-12" style="margin-top: 10px;">
+          <label  class="form-label" style="color: #077c8c;">Status</label>
+        </div>
+        <div  class="col-12">
+          <div role="group" class="btn-group btn-group-example mb-3">
+            <button id="v_button{{status}}" type="button" [ngClass]="verifikasi_button2" (click)="verifikasiku(status)">{{namast}}</button>
+            <ng-container *ngFor="let item of verif">
+            <button *ngIf="status != item.status" id="v_button{{item.status}}" type="button" [ngClass]="verifikasi_button" (click)="verifikasiku(item.status)">{{item.nama}}</button>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Tutup</button>
+      <button type="button" class="btn bg-custom" (click)="submit()">Simpan</button>
+    </div>
+</ng-template>

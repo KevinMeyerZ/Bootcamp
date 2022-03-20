@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+</head>
+
+<body>
+
+
+    <div class="container">
+
+        <div class=" row justify-content-md-center">
+            <div class="col-md-4 align-self-center mb-3 border">
+                <h4 class="text-center">Laporan Pembelian</h4>
+                <h6 class="text-center">Supplier: {{data_atas.sup}}</h6><br>
+                <h6 class="text-center">Periode Tanggal : {{data_atas.tgl_awal}} Sampai {{data_atas.tgl_akhir}}</h6>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-md-12 mt-5">
+        <table class="table table-bordered">
+            <thead>
+
+                <tr>
+
+                    <th class="border-right align-middle" rowspan="2">
+
+                        <div style="text-align: center;">Tanggal</div>
+                    </th>
+                    <th class="border-right align-middle" rowspan="2">
+
+                        <div style="text-align: center;">Kode Pembelian</div>
+                    </th>
+
+                    <th class="border-right align-middle" rowspan="2">
+
+                        <div style="text-align: center;">Barang
+                        </div>
+                    </th>
+                    <th class="border-right align-middle" rowspan="2">
+
+                        <div style="text-align: center;">Jumlah</div>
+                    </th>
+                    <th class="border-right align-middle" rowspan="2">
+
+                        <div style="text-align: center;">Harga</div>
+                    </th>
+                    <th class="border-right align-middle" rowspan="2">
+
+                        <div style="text-align: center;">Diskon</div>
+                    </th>
+                    <th class="border-right align-middle" rowspan="2">
+
+                        <div style="text-align: center;">Amount</div>
+                    </th>
+
+                </tr>
+
+
+            </thead>
+            <tbody>
+                {% if list is defined %}
+                {% for key, val in list %}
+                <tr>
+                    <td class="text-center border-right" rowspan="{{val.rows + 1}}">{{val.tgl}}
+                    </td>
+                    <td class="text-center border-right" rowspan="{{val.rows + 1}}">{{val.kode}}
+                    </td>
+
+                </tr>
+
+
+                {% for item in val.detail %}
+                <tr>
+                    <td class="text-center border-right">{{item.nama_barang}}</td>
+                    <td class="text-center border-right">{{item.jumlah_barang}}</td>
+                    <td class="text-center border-right">Rp. {{item.harga | number_format(2)}}</td>
+                    <td class="text-center border-right">{{item.diskon}}</td>
+                    <td class="text-center border-right">Rp. {{item.total_item |number_format(2)}}
+                    </td>
+                </tr>
+                {% endfor %}
+
+                {% endfor %}
+                {% endif %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="6" class="text-end">Total </td>
+                    <td colspan="6" class="text-center"> Rp. {{data_atas.total_bawah | number_format(2)}}
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+
+
+</body>
+
+</html>

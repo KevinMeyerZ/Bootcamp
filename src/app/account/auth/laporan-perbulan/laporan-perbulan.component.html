@@ -1,0 +1,88 @@
+<app-topbarku></app-topbarku>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-2">
+      <app-sidebarku></app-sidebarku>
+    </div>
+    <div class="col-lg-10">
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-lg-12">
+                <div class="card text-dark bg-white mb-3" style="box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-3" style="margin-top: 5px;">
+                                        <label for="range">Tanggal</label>
+                                    </div>
+                                    <div class="col-lg-9">
+                                        <input type="text" class="form-control" name="daterangeInput" daterangepicker [options]="options" (selected)="selectedDate($event, daterange)" [(ngModel)]="modelParam.range"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="text-dark bg-white mb-3 text-center" style="box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);">
+                    <button type="button" class="btn bg-primary" style="color: #fff; margin: 5px;" (click)="search()">Tampilkan</button>
+                    <button type="button" class="btn btn-danger" style="margin: 5px;" (click)="exportpdf()">PDF</button>
+                    <button type="button" class="btn btn-success" style="margin: 5px;" (click)="exportexcel()">Excel</button>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="card text-dark bg-white mb-3" style="box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);">
+                    <div class="container-fluid">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead style="background-color: #F9CA9C;">
+                                  <tr>
+                                    <th class="align-middle text-center" rowspan="2">Menu</th>
+                                    <th  class="text-center" [attr.colspan]="data_database.length">Periode: {{month}} 2022</th>
+                                    <th class="align-middle text-center" rowspan="2">Total</th>
+                                  </tr>
+                                  <tr>
+                                    <th *ngFor="let tanggal of data_database">{{tanggal.harian}}</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <th>Grand Total</th>
+                                    <td *ngFor="let produk of data_database">{{grand_total(produk.total_pertanggal) | currency: 'Rp'}}</td>
+                                    <td>{{g_hasil | currency: 'Rp'}}</td>
+                                </tr>
+                                <ng-container *ngFor="let kat of kategorinya">
+                                  <tr style="background-color: #c9dbf7;">
+                                    <th [attr.colspan]="data_database.length+2">{{kat.kategori}}</th>
+                                  </tr>
+                                  <ng-container *ngFor="let produk of produknya">
+                                    <ng-container *ngIf="produk.produk_kategori == kat.kategori">
+                                      <tr>
+                                        <td>{{ c_produk(produk,kat.kategori)}}</td>
+                                        <ng-container *ngFor="let data of data_database">      
+                                                <!-- <td *ngIf="item.nama == 'Nasi Goreng'">{{data.harian}}</td>
+                                                <ng-container *ngFor="let data of data_database">
+                                                    <td *ngIf="item.nama != 'Nasi Goreng'">0</td>
+                                                </ng-container> -->
+                                                <td>{{ goleki(data.harian,data.detail,produk.produk,kat.kategori) | currency: 'Rp'}}</td> 
+                                        </ng-container>
+                                        <td>{{ totalku(produk.produk,kat.kategori) | currency: 'Rp'}}</td>
+                                      </tr>
+                                    </ng-container>
+                                  </ng-container> 
+                                  <tr>
+                                    <th [attr.colspan]="data_database.length+1">Total {{kat.kategori}}</th>
+                                      <td>{{ total_kat(kat.kategori) | currency: 'Rp'}}</td>
+                                  </tr>
+                                </ng-container>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>   
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>

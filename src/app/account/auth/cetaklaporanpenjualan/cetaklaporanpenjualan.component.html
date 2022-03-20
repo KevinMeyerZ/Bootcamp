@@ -1,0 +1,48 @@
+<div class="container-fluid">
+    <button type="button" class="btn btn-danger" style="margin: 5px;" (click)="cetak()">Cetak</button>
+    <div class="card text-dark bg-white mb-3" style="box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%); height: 500px;">
+        <div class="container-fluid" id="contentToConvert">
+            <div class="row">
+                <div class="col-lg-12" style="margin-top: 20px;">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <img src="assets/logoangular.png" style="margin: auto; display: block; height: 55px;">
+                        </div>
+                        <div class="col-lg-10">
+                            <h5>LAPORAN PENJUALAN KAFE ABC</h5>
+                            <p>Periode:</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="container-fluid">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">ID Transaksi</th>
+                                <th scope="col">Waktu</th>
+                                <th scope="col">Kasir</th>
+                                <th scope="col">Total Transaksi</th>
+                                <th scope="col">Jenis Pembayaran</th>
+                                <th scope="col">Customer</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of data_cetak; index as i;">
+                                <th scope="row">{{1+i}}</th>
+                                <td>{{data.id_transaksi}}</td>
+                                <td>{{data.waktu_l}}</td>
+                                <td>{{data.kasir_l}}</td>
+                                <td>{{data.total_t_l}}</td>
+                                <td>{{data.jenis_bayar}}</td>
+                                <td>{{data.customer_l}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,59 @@
+<app-topbar></app-topbar>
+
+<div class="col-lg-12">
+    <div class="card" style="margin-top:20px; box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);">
+        <div class="card-body">
+            <h4 class="card-title">Tambah Voucher</h4>
+            <form> 
+                <div class="row">       
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-12">
+                                <label for="voucher">Customer</label>
+                                <select class="form-control form-select" aria-label=".form-select-sm example">
+                                <option value="" selected>Pilih Customer</option>
+                                <option value="1">This Item 1</option>
+                                </select>
+                            </div>
+                            <div  class="col-12" style="margin-top: 10px;">
+                                <label for="produk">Rentang Waktu</label>
+                                <input  type="date" class="form-control">
+                            </div>
+                            <div  class="col-12">
+                                <label  class="form-label">Jumlah</label>
+                                <input  type="text" placeholder="Jumlah" class="form-control">
+                            </div>
+                            <div  class="col-12">
+                                <label  class="form-label">Catatan</label>
+                                <textarea  type="text" placeholder="Catatan" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-12">
+                                <label for="voucher">Voucher</label>
+                                <select class="form-control form-select" aria-label=".form-select-sm example">
+                                <option value="" selected>Pilih Item</option>
+                                <option value="1">This Item 1</option>
+                            </select>
+                            </div>
+                            <div  class="col-12">
+                                <label  class="form-label">Nominal</label>
+                                <input  type="text" placeholder="Nominal" class="form-control">
+                            </div>
+                            <div class="col-12">
+                                <div class="mt-4" style="background: #dcdcdc;height: 275px;border-radius: .8rem;cursor: pointer;">
+                                    <h2 class="text-center"><i class="fa fa-image" style="margin-top: 95px;"></i><br>Upload Image</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12" style="margin-top: 20px;">
+                        <button type="submit" class="btn btn-primary" style="float: right; margin-right: 10px;">Simpan</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

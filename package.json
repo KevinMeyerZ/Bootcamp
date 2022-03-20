@@ -63,6 +63,7 @@
     "ng-click-outside": "^5.1.1",
     "ng2-charts": "^2.3.2",
     "ng2-daterangepicker": "^3.0.1",
+    "ngx-echarts": "^8.0.1",
     "ngx-mask": "^8.1.7",
     "ngx-perfect-scrollbar": "^9.0.0",
     "ngx-progressbar": "^6.0.2",

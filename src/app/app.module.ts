@@ -40,7 +40,6 @@ initFirebaseBackend(environment.firebaseConfig);
 @NgModule({
     declarations: [
         AppComponent
-
     ],
     imports: [
         BrowserModule,

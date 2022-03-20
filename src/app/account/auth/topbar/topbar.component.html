@@ -1,0 +1,117 @@
+<!-- Navbar -->
+<app-topbarku></app-topbarku>
+
+<!-- Navbar -->
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-2">
+            <app-sidebarku></app-sidebarku>
+        </div>
+        <div class="col-lg-10">
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-lg-3">
+                    <div class="card text-white bg-primary mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <span>Rp. {{bulan_ini}}</span>
+                                    <br>
+                                    <span style="font-size: 14px;">Rekapan Bulan Ini</span>
+                                </div>
+                                <div class="col-lg-6">
+                                    <img src="assets/local_atm_white_48dp.svg" style="margin: auto; display: block;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card text-white bg-danger mb-3">
+                      <div class="card-body">
+                        <div class="row">
+                              <div class="col-lg-6">
+                                  <span>Rp. {{hari_ini}}</span>
+                                  <br>
+                                  <span style="font-size: 14px;">Rekapan Hari Ini</span>
+                              </div>
+                              <div class="col-lg-6">
+                                  <img src="assets/local_atm_white_48dp.svg" style="margin: auto; display: block;">
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card text-white bg-warning mb-3">
+                        <div class="card-body">
+                          <div class="row">
+                                <div class="col-lg-6">
+                                    <span>{{terjual}}</span>
+                                    <br>
+                                    <span style="font-size: 14px;">Produk Terjual</span>
+                                </div>
+                                <div class="col-lg-6">
+                                    <img src="assets/lunch_dining_white_48dp.svg" style="margin: auto; display: block;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card text-white bg-info mb-3">
+                        <div class="card-body">
+                          <div class="row">
+                                <div class="col-lg-12">
+                                    <span>Best Seller :</span>
+                                    <br>
+                                    <div *ngFor="let item of best">
+                                      <span style="font-size: 14px;">{{item.nama}} ({{item.best_seller}})</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title mb-4">Total Penjualan 7 Hari Lampau</h4>
+                        <div class="chartjs-chart">
+                          <canvas baseChart [datasets]="lineBarChart.datasets" chartType="bar" [options]="lineBarChart.options"
+                            height="300" [labels]="lineBarChart.labels">
+                          </canvas>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title mb-4">Data Produk</h4>
+                        <div class="chartjs-chart">
+                          <!-- Line Chart -->
+                          <canvas baseChart [datasets]="pieChart.datasets" [labels]="pieChart.labels" chartType="pie" [options]="pieChart.options" height="260">
+                          </canvas>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <!-- <div class="col-lg-4">
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title mb-4">Total Penjualan Hari ini</h4>
+                        <div class="chartjs-chart">
+                          <canvas baseChart height="300" [datasets]="lineAreaChart.datasets" [labels]="lineAreaChart.labels"
+                            [options]="lineAreaChart.options" chartType="line">
+                          </canvas>
+                        </div>
+                      </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</div>

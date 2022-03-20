@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<style class="text/css">
+    * {
+        -webkit-print-color-adjust: exact !important;
+        /*Chrome, Safari */
+        color-adjust: exact !important;
+        /*Firefox*/
+    }
+    
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    
+    .table td,
+    .table th {
+        font-size: 12px;
+        border: 1px solid black;
+    }
+    
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        /* margin-right: -12px;
+    margin-left: -12px; */
+    }
+    
+    .col {
+        flex-basis: 0;
+        flex-grow: 1;
+        min-width: 0;
+        max-width: 100%;
+    }
+    
+    .col-1 {
+        flex: 0 0 40%;
+        max-width: 40%
+    }
+    
+    .col-2 {
+        flex: 0 0 20%;
+        max-width: 20%
+    }
+    
+    .col-3 {
+        flex: 0 0 70%;
+        max-width: 70%
+    }
+    
+    .col-4 {
+        flex: 0 0 30%;
+        max-width: 30%
+    }
+    
+    .col-5 {
+        flex: 0 0 28%;
+        max-width: 28%
+    }
+    
+    .footer {
+        border: 2px solid black;
+    
+    }
+    
+    .table-top {
+        border: 2px solid black;
+        width: fit-content;
+    
+    }
+    
+    .top {
+        width: 150px;
+        height: 100px;
+    }
+</style>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="col-md-12 mt-5">
+        <table class="table table-bordered" style="width:100%;">
+            <thead style="background-color: #F9CA9C;">
+                <tr>
+                <th class="border-right align-middle text-center" rowspan="2">No</th>
+                <th class="border-right align-middle text-center" rowspan="2">Customer</th>
+                <th  class="border-right text-center" colspan="31">Periode: {{month}} {{year}}</th>
+                <th class="border-right align-middle text-center" rowspan="2">Total</th>
+                </tr>
+                <tr>
+                {% for key, tanggal in list %}
+                <th class="border-right">{{tanggal.hari}}</th>
+                {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    {% set total_g = 0 %}
+                    <th colspan="2">Grand Total</th>
+                    {% for key, item in list %}
+                    {% if item.g_total != null  %}
+                    {% set total_g = total_g + item.g_total %}
+                    <td>{{item.g_total}}</td>
+                    {% else %}
+                    <td>0</td>
+                    {% endif %}
+                    {% endfor %}
+                    <td>{{total_g}}</td>
+                </tr>       
+                {% for key, data in customer %}
+                <tr>
+                    {% set total_c = 0 %}
+                    <th>1</th>
+                    <td>{{data.customer}}</td>
+                    {% for key, item in list %}
+                        {% set val = 0 %}
+                        {% if item.detail != null  %}
+                            {% for key, coba in item.detail %}
+                                {% if coba.nama == data.customer %}
+
+                                    {% set val = coba.total %}
+                                    {% set total_c = total_c + coba.total %}
+                                
+                                {% endif %}
+                            {% endfor %}
+                            <td>{{ val }}</td>
+                        {% else %}
+                        <td>0</td>
+                        {% endif %}
+                    {% endfor %}
+                    <td>{{total_c}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+
+</body>
+
+</html>

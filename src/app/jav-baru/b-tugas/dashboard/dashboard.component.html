@@ -1,0 +1,91 @@
+<app-topbar></app-topbar>
+<div class="container-fluid" style="margin-top: 20px;">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="row">
+                <div class="col-6">
+                    <div class="card header-card">
+                        <div class="card-body text-center statistics-info">
+                            <div>
+                                <div class="avatar-xs mx-auto mb-3">
+                                    <span class="avatar-title rounded-circle font-size-16" style="background: #077c8c;">
+                                        <i class="fa fa-chart-line"></i>
+                                    </span>
+                                </div>
+                                <h6 class="mt-4 mb-1">Hasil Kemarin</h6>
+                                <h2 class="mb-2 number-font">{{kemarin_hari}}</h2>
+                            </div><a class="card-link" href="#">View more</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card header-card">
+                        <div class="card-body text-center statistics-info">
+                            <div>
+                                <div class="avatar-xs mx-auto mb-3">
+                                    <span class="avatar-title rounded-circle font-size-16" style="background: #077c8c;">
+                                        <i class="fa fa-money-bill"></i>
+                                    </span>
+                                </div>
+                                <h6 class="mt-4 mb-1">Hasil Bulan Lalu</h6>
+                                <h2 class="mb-2 number-font">{{kemarin_bulan}}</h2>
+                            </div><a class="card-link" href="#">View more</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card header-card">
+                        <div class="card-body text-center statistics-info">
+                            <div>
+                                <div class="avatar-xs mx-auto mb-3">
+                                    <span class="avatar-title rounded-circle font-size-16" style="background: #077c8c;">
+                                        <i class="fa fa-money-bill"></i>
+                                    </span>
+                                </div>
+                                <h6 class="mt-4 mb-1">Hasil Hari Ini</h6>
+                                <h2 class="mb-2 number-font">{{hari_ini}}</h2>
+                            </div><a class="card-link" href="#">View more</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card header-card">
+                        <div class="card-body text-center statistics-info">
+                            <div>
+                                <div class="avatar-xs mx-auto mb-3">
+                                    <span class="avatar-title rounded-circle font-size-16" style="background: #077c8c;">
+                                        <i class="fa fa-briefcase"></i>
+                                    </span>
+                                </div>
+                                <h6 class="mt-4 mb-1">Hasil Bulan Ini</h6>
+                                <h2 class="mb-2 number-font">{{bulan_ini}}</h2>
+                            </div><a class="card-link" href="#">View more</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8" >
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                    <div class="col-4">
+                        <h5>Grafik Penjualan Per Tahun</h5>
+                    </div>
+                    <div class="col-8"  >
+                        <div class="row" style="float: right;">
+                            <input type="text" class="form-control" name="daterangeInput" daterangepicker [options]="options" (selected)="selectedDate($event, daterange)" id="example-date-input"/>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="chartjs-chart" style="margin-top: 20px;">
+                    <canvas baseChart [datasets]="lineBarChart.datasets" chartType="bar" [options]="lineBarChart.options"
+                        height="300" [labels]="lineBarChart.labels">
+                    </canvas>
+                    </div>
+                </div>
+                </div>
+        </div>
+    </div>
+</div>
+
